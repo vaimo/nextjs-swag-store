@@ -28,7 +28,7 @@ pnpm lint
 
 ```
 nextjs-foundations-starter/
-├── app/                        # Next.js application (localhost:3000)
+├── app/                        # Next.js application (localhost:3001)
 ├── packages/
 │   ├── ui/                     # Shared UI components
 │   └── api/                    # Mock data layer (Faker)
@@ -39,7 +39,7 @@ nextjs-foundations-starter/
 
 ## App
 
-- **app** - Next.js application running on port 3000
+- **app** - Next.js application running on port 3001
 
 ## Packages
 

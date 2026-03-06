@@ -8,7 +8,7 @@ A Turborepo monorepo with a Next.js application and shared packages:
 
 ```
 nextjs-foundations-starter/
-├── app/              # Next.js application (port 3000)
+├── app/              # Next.js application (port 3001)
 ├── packages/
 │   ├── ui/           # Shared React components (@repo/ui)
 │   └── api/          # Mock data layer with Faker (@repo/api)
@@ -56,7 +56,7 @@ vercel env pull
 ```bash
 # Start the app in dev mode
 pnpm dev
-# app: http://localhost:3000
+# app: http://localhost:3001
 
 # Or explicitly filter
 pnpm dev --filter @repo/app
@@ -230,8 +230,8 @@ import { Button } from "@repo/ui/button";
 ### Port Already in Use
 
 ```bash
-# Kill process on port 3000
-lsof -ti:3000 | xargs kill -9
+# Kill process on port 3001
+lsof -ti:3001 | xargs kill -9
 
 # Or use different ports
 PORT=3002 pnpm dev --filter @repo/app
