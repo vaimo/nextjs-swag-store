@@ -6,7 +6,6 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  await new Promise(resolve => setTimeout(resolve, 2000))
   return (
     <div className="max-w-4xl mx-auto">
       {/* Hero Section */}
