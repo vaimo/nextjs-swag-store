@@ -10,7 +10,7 @@ A Turborepo monorepo starter for the Next.js Foundations certification course.
 # Install dependencies
 pnpm install
 
-# Run both apps in dev mode
+# Run the app in dev mode
 pnpm dev
 
 # Type check all packages
@@ -28,9 +28,7 @@ pnpm lint
 
 ```
 nextjs-foundations-starter/
-├── apps/
-│   ├── web/                    # Marketing site (localhost:3000)
-│   └── blog/                   # Content hub (localhost:3001)
+├── app/                        # Next.js application (localhost:3000)
 ├── packages/
 │   ├── ui/                     # Shared UI components
 │   └── api/                    # Mock data layer (Faker)
@@ -39,10 +37,9 @@ nextjs-foundations-starter/
 └── package.json
 ```
 
-## Apps
+## App
 
-- **web** (`apps/web`) - Marketing site running on port 3000
-- **blog** (`apps/blog`) - Content hub running on port 3001
+- **app** - Next.js application running on port 3000
 
 ## Packages
 

@@ -4,13 +4,11 @@ This is the starter repository for the Next.js Foundations certification course.
 
 ## Project Overview
 
-A Turborepo monorepo with two Next.js applications and shared packages:
+A Turborepo monorepo with a Next.js application and shared packages:
 
 ```
 nextjs-foundations-starter/
-├── apps/
-│   ├── web/          # Marketing site (port 3000)
-│   └── blog/         # Content hub (port 3001)
+├── app/              # Next.js application (port 3000)
 ├── packages/
 │   ├── ui/           # Shared React components (@repo/ui)
 │   └── api/          # Mock data layer with Faker (@repo/api)
@@ -56,14 +54,12 @@ vercel env pull
 ### Development
 
 ```bash
-# Start both apps in dev mode
+# Start the app in dev mode
 pnpm dev
-# web: http://localhost:3000
-# blog: http://localhost:3001
+# app: http://localhost:3000
 
-# Start a specific app
-pnpm dev --filter @repo/web
-pnpm dev --filter @repo/blog
+# Or explicitly filter
+pnpm dev --filter @repo/app
 ```
 
 ### Vercel CLI
@@ -105,7 +101,7 @@ pnpm check
 pnpm build
 
 # Build specific app
-pnpm build --filter @repo/web
+pnpm build --filter @repo/app
 ```
 
 ## Package Dependencies
@@ -130,7 +126,7 @@ import { getGalleryItems } from "@repo/api/gallery";
 
 ```bash
 # Add to specific app
-pnpm add <package> --filter @repo/web
+pnpm add <package> --filter @repo/app
 
 # Add to shared package
 pnpm add <package> --filter @repo/ui
@@ -225,7 +221,7 @@ export function Button({ children, ...props }) {
   );
 }
 
-// apps/web/app/page.tsx
+// app/src/app/page.tsx
 import { Button } from "@repo/ui/button";
 ```
 
@@ -238,7 +234,7 @@ import { Button } from "@repo/ui/button";
 lsof -ti:3000 | xargs kill -9
 
 # Or use different ports
-PORT=3002 pnpm dev --filter @repo/web
+PORT=3002 pnpm dev --filter @repo/app
 ```
 
 ### Type Errors After Package Changes
@@ -259,7 +255,7 @@ Disable ESLint/Prettier extensions and enable Biome extension in your editor.
 This starter is designed for the Next.js Foundations certification. As you progress through lessons:
 
 1. **Don't modify shared packages** unless instructed
-2. **Focus on `apps/web` and `apps/blog`** for exercises
+2. **Focus on `app`** for exercises
 3. **Use `@repo/api` functions** for mock data
 4. **Follow the lesson structure** - each builds on previous work
 
