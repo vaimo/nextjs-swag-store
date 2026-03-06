@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Vercel Academy Foundation - Blog',
+  title: 'Vercel Academy Foundation - Blog.',
   description: 'VAF Blog',
 };
 
