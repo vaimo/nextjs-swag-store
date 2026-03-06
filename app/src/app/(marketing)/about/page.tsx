@@ -6,7 +6,6 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  throw new Error('Test error boundary');
   return (
     <div className="max-w-4xl mx-auto">
       {/* Hero Section */}
