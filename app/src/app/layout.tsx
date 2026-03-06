@@ -34,6 +34,9 @@ export default function RootLayout({
                               <a href="/gallery" className="hover:text-gray-600 transition">
                                   Gallery
                               </a>
+                              <a href="/blog" className="hover:text-gray-600 transition">
+                                  Blog
+                              </a>
                           </div>
                       </div>
                       <div className="flex gap-4">
