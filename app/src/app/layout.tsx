@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="container mx-auto px-4 py-8">
+      <body>
       <div className="min-h-screen flex flex-col">
           {/* Marketing Header */}
           <header className="border-b bg-white">
@@ -60,79 +60,59 @@ export default function RootLayout({
           </main>
 
           {/* Marketing Footer */}
-          <footer className="border-t bg-gray-50">
+          <footer className="border-t" style={{ backgroundColor: "#333", color: "#f7f7f7" }}>
               <div className="container mx-auto px-4 py-8">
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
                       <div>
-                          <h3 className="font-bold mb-4">
-                              {process.env.NEXT_PUBLIC_APP_NAME || "ACME"}
-                          </h3>
-                          <p className="text-sm text-gray-600">
-                              Building the future of web applications.
-                          </p>
+                          <h4 className="font-bold mb-4 uppercase text-sm tracking-wide">Services</h4>
+                          <ul className="space-y-2 text-sm" style={{ color: "#ccc" }}>
+                              <li><a href="#" className="hover:opacity-75 transition">Tool Rental</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Goods Delivery</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Wood Cutting</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Trailer Rental</a></li>
+                         </ul>
                       </div>
                       <div>
-                          <h4 className="font-semibold mb-4">Product</h4>
-                          <ul className="space-y-2 text-sm text-gray-600">
-                              <li>
-                                  <a href="#" className="hover:text-gray-900 transition">
-                                      Features
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="#" className="hover:text-gray-900 transition">
-                                      Pricing
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="#" className="hover:text-gray-900 transition">
-                                      Documentation
-                                  </a>
-                              </li>
+                          <h4 className="font-bold mb-4 uppercase text-sm tracking-wide">Pro Tips</h4>
+                          <ul className="space-y-2 text-sm" style={{ color: "#ccc" }}>
+                              <li><a href="#" className="hover:opacity-75 transition">Construction &amp; Renovation</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Garden &amp; Leisure</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Renovate &amp; Modernise</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Sanitary &amp; Heating</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Tools &amp; Machinery</a></li>
                           </ul>
                       </div>
                       <div>
-                          <h4 className="font-semibold mb-4">Company</h4>
-                          <ul className="space-y-2 text-sm text-gray-600">
-                              <li>
-                                  <a href="/about" className="hover:text-gray-900 transition">
-                                      About
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="#" className="hover:text-gray-900 transition">
-                                      Blog
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="#" className="hover:text-gray-900 transition">
-                                      Careers
-                                  </a>
-                              </li>
+                          <h4 className="font-bold mb-4 uppercase text-sm tracking-wide">Expert Centres</h4>
+                          <ul className="space-y-2 text-sm" style={{ color: "#ccc" }}>
+                              <li><a href="#" className="hover:opacity-75 transition">Opening Hours</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">How to Find Us</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Kids Club</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Drive-in Arena</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Garden Centre</a></li>
                           </ul>
                       </div>
                       <div>
-                          <h4 className="font-semibold mb-4">Legal</h4>
-                          <ul className="space-y-2 text-sm text-gray-600">
-                              <li>
-                                  <a href="#" className="hover:text-gray-900 transition">
-                                      Privacy
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="#" className="hover:text-gray-900 transition">
-                                      Terms
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="#" className="hover:text-gray-900 transition">
-                                      Contact
-                                  </a>
-                              </li>
+                          <h4 className="font-bold mb-4 uppercase text-sm tracking-wide">Customer Centre</h4>
+                          <ul className="space-y-2 text-sm" style={{ color: "#ccc" }}>
+                              <li><a href="#" className="hover:opacity-75 transition">Returns &amp; Complaints</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Warranties &amp; Guarantees</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Contact Form</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Downloads</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Loyalty Programme</a></li>
+                          </ul>
+                      </div>
+                      <div>
+                          <h4 className="font-bold mb-4 uppercase text-sm tracking-wide">About Us</h4>
+                          <ul className="space-y-2 text-sm" style={{ color: "#ccc" }}>
+                              <li><a href="#" className="hover:opacity-75 transition">Careers</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Job Openings</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Downloads</a></li>
+                              <li><a href="#" className="hover:opacity-75 transition">Corporate Responsibility</a></li>
                           </ul>
                       </div>
                   </div>
-                  <div className="mt-8 pt-8 border-t text-center text-sm text-gray-600">
+                  <div className="mt-8 pt-8 border-t text-center text-sm" style={{ color: "#f7f7f7", borderColor: "#555" }}>
                       <p>© {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "SWAG Store"}. All rights reserved.</p>
                   </div>
               </div>
