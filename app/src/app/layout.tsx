@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: process.env.NEXT_PUBLIC_APP_NAME || "Vercel Academy Foundation - Web",
+  title: "%s | " + process.env.NEXT_PUBLIC_APP_NAME,
   description: "VAF Web",
 };
 

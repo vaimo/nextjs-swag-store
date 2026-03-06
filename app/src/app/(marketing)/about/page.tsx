@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us | " + (process.env.NEXT_PUBLIC_APP_NAME || "SWAG Store"),
+  title: "About Us",
   description: "Learn more about our mission, values, and team.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  await new Promise(resolve => setTimeout(resolve, 2000))
   return (
     <div className="max-w-4xl mx-auto">
       {/* Hero Section */}
