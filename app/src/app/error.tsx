@@ -20,6 +20,11 @@ export default function MarketingError({
         <p className="text-gray-600 mb-6">
           {error.message || 'We encountered an error loading this page.'}
         </p>
+        {error.digest && (
+            <p className="mb-4 font-mono text-red-400 text-xs">
+              Error ID: {error.digest}
+            </p>
+        )}
         <div className="flex gap-4 justify-center">
           <button
             onClick={reset}
