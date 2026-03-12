@@ -24,43 +24,46 @@ async function fetchUserActivity(id: string) {
   ];
 }
 
-// TODO: This fetches SEQUENTIALLY - learner optimizes with Promise.all
-async function ProfileContent({ id }: { id: string }) {
-  // INTENTIONAL: Sequential fetching (Section 4 Lesson 2 fixes this)
+async function ProfileHeader({ id }: { id: string }) {
   const profile = await fetchUserProfile(id);
-  const stats = await fetchUserStats(id);
-  const activity = await fetchUserActivity(id);
-
   return (
-    <div className="space-y-6">
-      <section>
-        <h1 className="font-bold text-2xl">{profile.name}</h1>
-        <p className="text-gray-600">{profile.email}</p>
-      </section>
+    <section>
+      <h1 className="font-bold text-2xl">{profile.name}</h1>
+      <p className="text-gray-600">{profile.email}</p>
+    </section>
+  );
+}
 
-      <section className="flex gap-4">
-        <div>
-          <strong>{stats.posts}</strong> posts
-        </div>
-        <div>
-          <strong>{stats.followers}</strong> followers
-        </div>
-        <div>
-          <strong>{stats.following}</strong> following
-        </div>
-      </section>
+async function ProfileStats({ id }: { id: string }) {
+  const stats = await fetchUserStats(id);
+  return (
+    <section className="flex gap-4">
+      <div>
+        <strong>{stats.posts}</strong> posts
+      </div>
+      <div>
+        <strong>{stats.followers}</strong> followers
+      </div>
+      <div>
+        <strong>{stats.following}</strong> following
+      </div>
+    </section>
+  );
+}
 
-      <section>
-        <h2 className="mb-2 font-semibold text-xl">Recent Activity</h2>
-        <ul className="space-y-2">
-          {activity.map((item, i) => (
-            <li key={i} className="text-gray-700">
-              {item.title}
-            </li>
-          ))}
-        </ul>
-      </section>
-    </div>
+async function ProfileActivity({ id }: { id: string }) {
+  const activity = await fetchUserActivity(id);
+  return (
+    <section>
+      <h2 className="mb-2 font-semibold text-xl">Recent Activity</h2>
+      <ul className="space-y-2">
+        {activity.map((item, i) => (
+          <li key={i} className="text-gray-700">
+            {item.title}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
@@ -73,11 +76,19 @@ export default async function ProfilePage({
 
   return (
     <main className="mx-auto max-w-2xl p-8">
-      <Suspense
-        fallback={<div className="animate-pulse">Loading profile...</div>}
-      >
-        <ProfileContent id={id} />
-      </Suspense>
+      <div className="space-y-6">
+        <Suspense fallback={<div className="animate-pulse h-10 bg-gray-100 rounded" />}>
+          <ProfileHeader id={id} />
+        </Suspense>
+
+        <Suspense fallback={<div className="animate-pulse h-8 bg-gray-100 rounded" />}>
+          <ProfileStats id={id} />
+        </Suspense>
+
+        <Suspense fallback={<div className="animate-pulse h-24 bg-gray-100 rounded" />}>
+          <ProfileActivity id={id} />
+        </Suspense>
+      </div>
     </main>
   );
 }
