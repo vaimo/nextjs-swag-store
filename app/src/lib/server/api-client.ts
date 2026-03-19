@@ -52,10 +52,6 @@ export async function fetchFeaturedProducts(): Promise<Product[]> {
     return res.data;
 }
 
-export async function fetchProducts(): Promise<Product[]> {
-    const res = await apiFetch<ProductsResponse>("/products");
-    return res.data;
-}
 
 interface ProductResponse {
     success: boolean;
