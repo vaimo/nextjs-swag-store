@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { fetchProductBySlug, fetchInventory } from "@/lib/server/api-client";
+import { fetchProductBySlug, fetchProductStock } from "@/lib/server/api-client";
 import { AddToCart } from "@/components/add-to-cart";
 import { formatPrice } from "@/lib/format-price";
+import { StockIndicator } from "@/components/stock-indicator";
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -19,21 +20,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-
 export default async function ProductPage({ params }: Props) {
     const { slug } = await params;
     const product = await fetchProductBySlug(slug);
 
     if (!product) notFound();
 
-    const inventory = await fetchInventory(product.id);
-    const inStock = inventory?.inStock ?? true;
-    const quantity = inventory?.quantity ?? 0;
+    const stock = await fetchProductStock(product.slug);
+    const inStock = stock?.inStock ?? true;
+    const quantity = stock?.stock ?? 0;
 
     return (
         <div className="mx-auto py-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                {/* Product Image */}
                 <div className="relative aspect-square bg-gray-50">
                     <Image
                         src={product.images[0] ?? ""}
@@ -43,6 +42,7 @@ export default async function ProductPage({ params }: Props) {
                         sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover"
                     />
+                    <StockIndicator stock={stock} />
                 </div>
 
                 {/* Product Info */}
@@ -60,19 +60,6 @@ export default async function ProductPage({ params }: Props) {
                         </p>
                     </div>
 
-                    {/* Stock indicator */}
-                    <div className="flex items-center gap-2">
-                        <span
-                            className={`w-2 h-2 rounded-full ${inStock ? "bg-green-500" : "bg-red-500"}`}
-                        />
-                        <span className="text-sm text-gray-600">
-                            {inStock
-                                ? `In stock${quantity > 0 ? ` — ${quantity} available` : ""}`
-                                : "Out of stock"}
-                        </span>
-                    </div>
-
-                    {/* Description */}
                     <p className="text-gray-600 text-sm leading-relaxed">{product.description}</p>
 
                     {/* Tags */}
@@ -90,10 +77,9 @@ export default async function ProductPage({ params }: Props) {
                     )}
 
                     {/* Quantity + Add to cart */}
-                    <AddToCart maxQuantity={quantity > 0 ? quantity : 99} inStock={inStock} />
+                    <AddToCart maxQuantity={quantity} inStock={inStock} />
                 </div>
             </div>
         </div>
     );
 }
-

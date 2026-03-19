@@ -9,6 +9,7 @@ interface AddToCartProps {
 }
 
 export function AddToCart({ maxQuantity, inStock }: AddToCartProps) {
+    const disabled = !inStock || maxQuantity === 0;
     const [quantity, setQuantity] = useState(1);
 
     const decrement = () => setQuantity((q) => Math.max(1, q - 1));
@@ -22,7 +23,7 @@ export function AddToCart({ maxQuantity, inStock }: AddToCartProps) {
                 <div className="flex items-center border">
                     <button
                         onClick={decrement}
-                        disabled={!inStock || quantity <= 1}
+                        disabled={disabled || quantity <= 1}
                         className="p-2 hover:bg-gray-100 disabled:opacity-30 transition"
                         aria-label="Decrease quantity"
                     >
@@ -31,7 +32,7 @@ export function AddToCart({ maxQuantity, inStock }: AddToCartProps) {
                     <span className="w-10 text-center text-sm font-medium">{quantity}</span>
                     <button
                         onClick={increment}
-                        disabled={!inStock || quantity >= maxQuantity}
+                        disabled={disabled || quantity >= maxQuantity}
                         className="p-2 hover:bg-gray-100 disabled:opacity-30 transition"
                         aria-label="Increase quantity"
                     >
@@ -42,7 +43,7 @@ export function AddToCart({ maxQuantity, inStock }: AddToCartProps) {
 
             {/* Add to cart button */}
             <button
-                disabled={!inStock}
+                disabled={disabled}
                 className="flex items-center justify-center gap-2 w-full py-3 px-6 bg-black text-white font-medium text-sm hover:bg-gray-800 transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
                 <ShoppingCart size={18} />

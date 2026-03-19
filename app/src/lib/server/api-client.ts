@@ -67,20 +67,21 @@ export async function fetchProductBySlug(slug: string): Promise<Product | null> 
     }
 }
 
-export interface Inventory {
+export interface Stock {
     productId: string;
-    quantity: number;
+    stock: number;
     inStock: boolean;
+    lowStock: boolean;
 }
 
-interface InventoryResponse {
+interface StockResponse {
     success: boolean;
-    data: Inventory;
+    data: Stock;
 }
 
-export async function fetchInventory(productId: string): Promise<Inventory | null> {
+export async function fetchProductStock(slug: string): Promise<Stock | null> {
     try {
-        const res = await apiFetch<InventoryResponse>(`/inventory/${productId}`);
+        const res = await apiFetch<StockResponse>(`/products/${slug}/stock`);
         return res.data;
     } catch {
         return null;
