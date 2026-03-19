@@ -1,13 +1,22 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
+import type { Product } from "@/lib/server/api-client";
 
 const STORAGE_KEY = "swag_cart_token";
 const STORAGE_EXPIRY_KEY = "swag_cart_token_expiry";
-const STORAGE_TOTAL_KEY = "swag_cart_total";
 const TTL_MS = 24 * 60 * 60 * 1000;
+
+export interface CartItem {
+    productId: string;
+    quantity: number;
+    addedAt: string;
+    product: Product;
+    lineTotal: number;
+}
 
 export interface CartState {
     token: string | null;
     expiresAt: number | null;
+    items: CartItem[];
     totalItems: number;
     subtotal: number;
     currency: string;
@@ -17,23 +26,24 @@ export interface CartState {
 const initialState: CartState = {
     token: null,
     expiresAt: null,
+    items: [],
     totalItems: 0,
     subtotal: 0,
     currency: "USD",
     status: "idle",
 };
 
-// Thunk: create cart via proxy route, returns token
-export const initCart = createAsyncThunk("cart/init", async () => {
-    // Check localStorage first
-    if (typeof window !== "undefined") {
-        const token = localStorage.getItem(STORAGE_KEY);
-        const expiry = localStorage.getItem(STORAGE_EXPIRY_KEY);
-        if (token && expiry && Date.now() < Number(expiry)) {
-            return { token, expiresAt: Number(expiry) };
-        }
+// Only creates a new cart if no valid token exists in localStorage.
+// Does NOT overwrite persisted Redux state — called only when token is absent.
+export const initCart = createAsyncThunk("cart/init", async (_, { getState }) => {
+    const state = (getState() as { cart: CartState }).cart;
+
+    // Already have a valid token in Redux state (rehydrated by redux-persist)
+    if (state.token && state.expiresAt && Date.now() < state.expiresAt) {
+        return null; // no-op
     }
 
+    // Create a new cart
     const res = await fetch("/api/cart/create", { method: "POST" });
     if (!res.ok) throw new Error("Failed to create cart");
 
@@ -63,9 +73,6 @@ const cartSlice = createSlice({
             state.totalItems = action.payload.totalItems;
             state.subtotal = action.payload.subtotal;
             state.currency = action.payload.currency;
-            if (typeof window !== "undefined") {
-                localStorage.setItem(STORAGE_TOTAL_KEY, String(action.payload.totalItems));
-            }
         },
         clearCart(state) {
             state.token = null;
@@ -76,7 +83,6 @@ const cartSlice = createSlice({
             if (typeof window !== "undefined") {
                 localStorage.removeItem(STORAGE_KEY);
                 localStorage.removeItem(STORAGE_EXPIRY_KEY);
-                localStorage.removeItem(STORAGE_TOTAL_KEY);
             }
         },
     },
@@ -86,12 +92,11 @@ const cartSlice = createSlice({
                 state.status = "loading";
             })
             .addCase(initCart.fulfilled, (state, action) => {
-                state.token = action.payload.token;
-                state.expiresAt = action.payload.expiresAt;
-                state.items = action.payload.items;
-                state.totalItems = action.payload.totalItems;
-                state.subtotal = action.payload.subtotal;
-                state.currency = action.payload.currency;
+                // null means token already existed — keep persisted state as-is
+                if (action.payload) {
+                    state.token = action.payload.token;
+                    state.expiresAt = action.payload.expiresAt;
+                }
                 state.status = "idle";
             })
             .addCase(initCart.rejected, (state) => {
@@ -102,4 +107,3 @@ const cartSlice = createSlice({
 
 export const { setCart, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
-

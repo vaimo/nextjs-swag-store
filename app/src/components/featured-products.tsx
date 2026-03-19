@@ -1,11 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import { fetchFeaturedProducts, fetchProductStock, type Product, type Stock } from "@/lib/server/api-client";
 import { formatPrice } from "@/lib/format-price";
 import { StockIndicator } from "@/components/stock-indicator";
 
 function ProductCard({ product, stock }: { product: Product; stock: Stock | null }) {
     return (
-        <a href={`/products/${product.slug}`} className="group flex flex-col border hover:shadow-lg transition">
+        <Link href={`/products/${product.slug}`} className="group flex flex-col border hover:shadow-lg transition">
             <div className="relative aspect-square overflow-hidden bg-gray-50">
                 <Image
                     src={product.images[0] ?? "https://picsum.photos/400/400?grayscale"}
@@ -21,7 +22,7 @@ function ProductCard({ product, stock }: { product: Product; stock: Stock | null
                 <h3 className="font-semibold text-sm leading-snug">{product.name}</h3>
                 <p className="text-sm font-medium">{formatPrice(product.price, product.currency)}</p>
             </div>
-        </a>
+        </Link>
     );
 }
 
