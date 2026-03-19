@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
-import { PromoBanner } from '@/components/promo-banner'
+import { PromoBanner } from '@/components/widgets/promo-banner'
 import { ReduxProvider } from '@/store/redux-provider'
 
 import './globals.css'

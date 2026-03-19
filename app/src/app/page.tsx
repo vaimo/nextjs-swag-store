@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { HeroBanner } from "@/components/hero-banner";
-import { GalleryGrid } from "@/components/gallery-grid";
-import { FeaturedProducts } from "@/components/featured-products";
+import { HeroBanner } from "@/components/widgets/hero-banner";
+import { GalleryGrid } from "@/components/widgets/gallery-grid";
+import { FeaturedProducts } from "@/components/widgets/featured-products";
 import { FeaturedProductsSkeleton } from "@/components/skeletons";
 
 
