@@ -40,7 +40,7 @@ export default function RootLayout({
                   <div className="flex items-center justify-between">
                       <div className="flex items-center gap-8">
                           <a href="/" className="font-bold text-xl">
-                              {process.env.NEXT_PUBLIC_APP_NAME || "SWAG Store"}
+                              {process.env.NEXT_PUBLIC_APP_NAME || "SWAG Store!"}
                           </a>
                           <div className="hidden md:flex gap-6">
                               <a href="/" className="hover:text-gray-600 transition">
