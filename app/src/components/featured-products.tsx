@@ -36,7 +36,7 @@ export async function FeaturedProducts() {
     if (!products.length) return null;
 
     return (
-        <section className="mx-auto py-12 px-8">
+        <section className="mx-auto py-12">
             <h2 className="text-2xl mb-8">Featured Products</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {products.map((product) => (

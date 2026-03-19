@@ -6,7 +6,7 @@ export async function PromoBanner() {
     if (!promo?.active) return null;
 
     return (
-        <div className="w-full bg-black text-white text-center py-2 px-4 text-sm">
+        <div className="w-full bg-[#333] text-[#f7f7f7] text-center py-2 px-4 text-sm">
             <span className="font-semibold">{promo.title}</span>
             {" — "}
             {promo.description}

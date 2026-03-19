@@ -17,7 +17,7 @@ export default function HomePage() {
             <Suspense fallback={<FeaturedProductsSkeleton />}>
                 <FeaturedProducts />
             </Suspense>
-            <section className="mx-auto py-12">
+            <section className="mx-auto">
                 <GalleryGrid />
             </section>
         </div>
