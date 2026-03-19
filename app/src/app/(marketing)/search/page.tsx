@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us",
-  description: "Learn more about our mission, values, and team.",
+  title: "Search",
+  description: "Search for the products you need"
 };
 
 export default async function AboutPage() {

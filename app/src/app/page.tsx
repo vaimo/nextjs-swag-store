@@ -4,8 +4,8 @@ import { GalleryGrid } from "@/components/gallery-grid";
 
 
 export const metadata: Metadata = {
-    title: process.env.NEXT_PUBLIC_APP_NAME || "SWAG Store",
-    description: "Welcome to our platform - Building the future of web development",
+    title: "SWAG Homepage",
+    description: "Welcome to our platform! Explore our features and discover how we can help you achieve your goals.",
 };
 
 export default function HomePage() {

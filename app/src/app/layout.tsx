@@ -23,8 +23,11 @@ const jetbrainsMono = JetBrains_Mono({
                                      })
 
 export const metadata: Metadata = {
-    title: process.env.NEXT_PUBLIC_APP_NAME || 'Vercel Academy Foundation - Web',
-    description: 'VAF Web',
+    title: {
+        template: `%s | ${process.env.NEXT_PUBLIC_APP_NAME}`,
+        default: process.env.NEXT_PUBLIC_APP_NAME ?? 'SWAG Store',
+    },
+    description: `${process.env.NEXT_PUBLIC_APP_NAME} - Building the future of web development`,
 }
 
 export default function RootLayout({

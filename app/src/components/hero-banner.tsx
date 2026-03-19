@@ -11,7 +11,7 @@ export function HeroBanner() {
         width: 1440,
         height: 560,
         quality: 85,
-        src: "https://picsum.photos/1440/560?random=home-hero-desktop",
+        src: "https://picsum.photos/1440/560?random=street-modern-hero",
     });
 
     // Mobile: taller portrait
@@ -22,7 +22,7 @@ export function HeroBanner() {
         width: 750,
         height: 900,
         quality: 75,
-        src: "https://picsum.photos/750/900?random=home-hero-mobile",
+        src: "https://picsum.photos/750/900?random=city-hero-mobile",
     });
 
     return (
@@ -42,7 +42,7 @@ export function HeroBanner() {
             {/* Gradient overlay with text */}
             <div
                 className="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
-                style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.55))" }}
+                style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.75))" }}
             >
                 <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg mb-4">
                     {process.env.NEXT_PUBLIC_APP_NAME || "SWAG Store"}
