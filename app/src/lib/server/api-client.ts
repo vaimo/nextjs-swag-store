@@ -4,16 +4,6 @@ const BASE_URL = process.env.API_BASE_URL!;
 const BYPASS_TOKEN = process.env.API_BYPASS_TOKEN!;
 
 async function apiFetch<T>(path: string): Promise<T> {
-    console.log('API_BASE_URL:', process.env.API_BASE_URL)
-    console.log('Fetching products...')
-
-    const response = await fetch(`${process.env.API_BASE_URL}/products?featured=true`, {
-        headers: {
-            'x-vercel-protection-bypass': process.env.API_BYPASS_TOKEN || ''
-        }
-    })
-
-    console.log('Response status:', response.status)
     const res = await fetch(`${BASE_URL}${path}`, {
         headers: {
             "x-vercel-protection-bypass": BYPASS_TOKEN,
