@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/tool
 
 const STORAGE_KEY = "swag_cart_token";
 const STORAGE_EXPIRY_KEY = "swag_cart_token_expiry";
+const STORAGE_TOTAL_KEY = "swag_cart_total";
 const TTL_MS = 24 * 60 * 60 * 1000;
 
 export interface CartState {
@@ -52,19 +53,30 @@ const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        setTotals(state, action: PayloadAction<{ totalItems: number; subtotal: number; currency: string }>) {
+        setCart(state, action: PayloadAction<{
+            items: CartItem[];
+            totalItems: number;
+            subtotal: number;
+            currency: string;
+        }>) {
+            state.items = action.payload.items;
             state.totalItems = action.payload.totalItems;
             state.subtotal = action.payload.subtotal;
             state.currency = action.payload.currency;
+            if (typeof window !== "undefined") {
+                localStorage.setItem(STORAGE_TOTAL_KEY, String(action.payload.totalItems));
+            }
         },
         clearCart(state) {
             state.token = null;
             state.expiresAt = null;
+            state.items = [];
             state.totalItems = 0;
             state.subtotal = 0;
             if (typeof window !== "undefined") {
                 localStorage.removeItem(STORAGE_KEY);
                 localStorage.removeItem(STORAGE_EXPIRY_KEY);
+                localStorage.removeItem(STORAGE_TOTAL_KEY);
             }
         },
     },
@@ -76,6 +88,10 @@ const cartSlice = createSlice({
             .addCase(initCart.fulfilled, (state, action) => {
                 state.token = action.payload.token;
                 state.expiresAt = action.payload.expiresAt;
+                state.items = action.payload.items;
+                state.totalItems = action.payload.totalItems;
+                state.subtotal = action.payload.subtotal;
+                state.currency = action.payload.currency;
                 state.status = "idle";
             })
             .addCase(initCart.rejected, (state) => {
@@ -84,6 +100,6 @@ const cartSlice = createSlice({
     },
 });
 
-export const { setTotals, clearCart } = cartSlice.actions;
+export const { setCart, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
 

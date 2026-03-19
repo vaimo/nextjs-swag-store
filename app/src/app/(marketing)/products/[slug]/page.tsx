@@ -77,7 +77,7 @@ export default async function ProductPage({ params }: Props) {
                     )}
 
                     {/* Quantity + Add to cart */}
-                    <AddToCart maxQuantity={quantity} inStock={inStock} />
+                    <AddToCart productId={product.id} maxQuantity={quantity} inStock={inStock} />
                 </div>
             </div>
         </div>

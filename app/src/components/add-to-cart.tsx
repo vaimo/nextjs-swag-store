@@ -2,17 +2,21 @@
 
 import { useState } from "react";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
-import { useAppSelector } from "@/store/hooks";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { setCart } from "@/store/cart-slice";
 
 interface AddToCartProps {
+    productId: string;
     maxQuantity: number;
     inStock: boolean;
 }
 
-export function AddToCart({ maxQuantity, inStock }: AddToCartProps) {
+export function AddToCart({ productId, maxQuantity, inStock }: AddToCartProps) {
     const disabled = !inStock || maxQuantity === 0;
     const [quantity, setQuantity] = useState(1);
+    const [adding, setAdding] = useState(false);
     const { token, status } = useAppSelector((s) => s.cart);
+    const dispatch = useAppDispatch();
     const isLoading = status === "loading";
 
     const decrement = () => setQuantity((q) => Math.max(1, q - 1));
@@ -20,8 +24,28 @@ export function AddToCart({ maxQuantity, inStock }: AddToCartProps) {
 
     const handleAddToCart = async () => {
         if (!token) return;
-        // TODO: call add-to-cart API with token + quantity
-        console.log("Cart token:", token, "qty:", quantity);
+        setAdding(true);
+        try {
+            const res = await fetch("/api/cart", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-cart-token": token,
+                },
+                body: JSON.stringify({ productId, quantity }),
+            });
+            if (res.ok) {
+                const data = await res.json();
+                dispatch(setCart({
+                    items: data.data.items,
+                    totalItems: data.data.totalItems,
+                    subtotal: data.data.subtotal,
+                    currency: data.data.currency,
+                }));
+            }
+        } finally {
+            setAdding(false);
+        }
     };
 
     return (
@@ -53,13 +77,12 @@ export function AddToCart({ maxQuantity, inStock }: AddToCartProps) {
             {/* Add to cart button */}
             <button
                 onClick={handleAddToCart}
-                disabled={disabled || isLoading}
+                disabled={disabled || isLoading || adding}
                 className="flex items-center justify-center gap-2 w-full py-3 px-6 bg-black text-white font-medium text-sm hover:bg-gray-800 transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
                 <ShoppingCart size={18} />
-                {isLoading ? "Creating cart…" : "Add to Cart"}
+                {isLoading ? "Creating cart…" : adding ? "Adding…" : "Add to Cart"}
             </button>
         </div>
     );
 }
-
