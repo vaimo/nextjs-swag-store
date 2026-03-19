@@ -1,13 +1,6 @@
 import Image from "next/image";
 import { fetchFeaturedProducts, type Product } from "@/lib/server/api-client";
-
-function formatPrice(price: number, currency: string) {
-    return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency,
-        minimumFractionDigits: 0,
-    }).format(price / 100);
-}
+import { formatPrice } from "@/lib/format-price";
 
 function ProductCard({ product }: { product: Product }) {
     return (

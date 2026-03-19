@@ -57,6 +57,40 @@ export async function fetchProducts(): Promise<Product[]> {
     return res.data;
 }
 
+interface ProductResponse {
+    success: boolean;
+    data: Product;
+}
+
+export async function fetchProductBySlug(slug: string): Promise<Product | null> {
+    try {
+        const res = await apiFetch<ProductResponse>(`/products/${slug}`);
+        return res.data;
+    } catch {
+        return null;
+    }
+}
+
+export interface Inventory {
+    productId: string;
+    quantity: number;
+    inStock: boolean;
+}
+
+interface InventoryResponse {
+    success: boolean;
+    data: Inventory;
+}
+
+export async function fetchInventory(productId: string): Promise<Inventory | null> {
+    try {
+        const res = await apiFetch<InventoryResponse>(`/inventory/${productId}`);
+        return res.data;
+    } catch {
+        return null;
+    }
+}
+
 export interface Promotion {
     id: string;
     title: string;
