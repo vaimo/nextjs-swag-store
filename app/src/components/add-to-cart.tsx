@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
+import { useAppSelector } from "@/store/hooks";
 
 interface AddToCartProps {
     maxQuantity: number;
@@ -11,9 +12,17 @@ interface AddToCartProps {
 export function AddToCart({ maxQuantity, inStock }: AddToCartProps) {
     const disabled = !inStock || maxQuantity === 0;
     const [quantity, setQuantity] = useState(1);
+    const { token, status } = useAppSelector((s) => s.cart);
+    const isLoading = status === "loading";
 
     const decrement = () => setQuantity((q) => Math.max(1, q - 1));
     const increment = () => setQuantity((q) => Math.min(maxQuantity, q + 1));
+
+    const handleAddToCart = async () => {
+        if (!token) return;
+        // TODO: call add-to-cart API with token + quantity
+        console.log("Cart token:", token, "qty:", quantity);
+    };
 
     return (
         <div className="flex flex-col gap-4">
@@ -43,11 +52,12 @@ export function AddToCart({ maxQuantity, inStock }: AddToCartProps) {
 
             {/* Add to cart button */}
             <button
-                disabled={disabled}
+                onClick={handleAddToCart}
+                disabled={disabled || isLoading}
                 className="flex items-center justify-center gap-2 w-full py-3 px-6 bg-black text-white font-medium text-sm hover:bg-gray-800 transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
                 <ShoppingCart size={18} />
-                Add to Cart
+                {isLoading ? "Creating cart…" : "Add to Cart"}
             </button>
         </div>
     );

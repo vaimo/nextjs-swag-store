@@ -6,6 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { PromoBanner } from '@/components/promo-banner'
+import { ReduxProvider } from '@/store/redux-provider'
 
 import './globals.css'
 
@@ -40,6 +41,7 @@ export default function RootLayout({
     return (
         <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body>
+      <ReduxProvider>
       <div className="min-h-screen flex flex-col">
           <Suspense fallback={null}>
               <PromoBanner />
@@ -70,6 +72,7 @@ export default function RootLayout({
         />
         <Analytics />
         <SpeedInsights />
+      </ReduxProvider>
       </body>
     </html>
   );
