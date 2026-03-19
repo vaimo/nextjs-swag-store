@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
                 hostname: "picsum.photos",
                 pathname: "/**",
             },
+            {
+                protocol: "https",
+                hostname: "i8qy5y6gxkdgdcv9.public.blob.vercel-storage.com",
+                pathname: "/**",
+            },
         ],
         // Match Tailwind breakpoints
         deviceSizes: [640, 768, 1024, 1280, 1536, 1920],
