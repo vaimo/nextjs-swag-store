@@ -33,9 +33,10 @@ export function HeroBanner() {
                 <img
                     {...rest}
                     fetchPriority="high"
-                    style={{ width: "100%", height: "auto", borderRadius: "2px" }}
+                    style={{ width: "100%", height: "auto", maxHeight: "485px", objectFit: "cover", borderRadius: "2px" }}
                     className="object-cover w-full"
                     alt="SWAG Store hero banner"
+
                 />
             </picture>
             {/* Gradient overlay with text */}
