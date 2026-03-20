@@ -84,7 +84,14 @@ export const initCart = createAsyncThunk(
       localStorage.setItem(STORAGE_EXPIRY_KEY, String(expiresAt));
     }
 
-    return { token, expiresAt, items: [], totalItems: 0, subtotal: 0, currency: 'USD' };
+    return {
+      token,
+      expiresAt,
+      items: [],
+      totalItems: 0,
+      subtotal: 0,
+      currency: 'USD',
+    };
   }
 );
 

@@ -1,6 +1,14 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  cacheComponents: true,
+  cacheLife: {
+    products: {
+      stale: 60 * 15, // 15 minutes
+      revalidate: 60 * 15,
+      expire: 60 * 60, // 1 hour
+    },
+  },
   images: {
     remotePatterns: [
       {

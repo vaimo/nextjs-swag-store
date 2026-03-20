@@ -22,7 +22,6 @@ function ProductGrid({ products }: { products: Product[] }) {
   );
 }
 
-
 export default function SearchPage() {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
@@ -36,8 +35,12 @@ export default function SearchPage() {
     setLoading(true);
     try {
       const qs = new URLSearchParams();
-      if (q) { qs.set('search', q); }
-      if (cat) { qs.set('category', cat); }
+      if (q) {
+        qs.set('search', q);
+      }
+      if (cat) {
+        qs.set('category', cat);
+      }
       qs.set('limit', '5');
       const res = await fetch(`/api/products?${qs}`);
       const data = await res.json();
@@ -58,7 +61,9 @@ export default function SearchPage() {
   }, [doSearch]);
 
   useEffect(() => {
-    if (debounceRef.current) { clearTimeout(debounceRef.current); }
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
     if (query.length >= 3 || category) {
       setHasSearched(true);
       debounceRef.current = setTimeout(() => doSearch(query, category), 400);
@@ -67,12 +72,16 @@ export default function SearchPage() {
       doSearch('', '');
     }
     return () => {
-      if (debounceRef.current) { clearTimeout(debounceRef.current); }
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
     };
   }, [query, category, hasSearched, doSearch]);
 
   const triggerSearch = () => {
-    if (debounceRef.current) { clearTimeout(debounceRef.current); }
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
     setHasSearched(true);
     doSearch(query, category);
   };
@@ -94,7 +103,9 @@ export default function SearchPage() {
       ) : products.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-2 py-16 text-gray-400">
           <Search size={40} strokeWidth={1} />
-          <p className="text-sm">No products found{query ? ` for "${query}"` : ''}</p>
+          <p className="text-sm">
+            No products found{query ? ` for "${query}"` : ''}
+          </p>
         </div>
       ) : (
         <>

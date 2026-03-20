@@ -1,3 +1,4 @@
+import { cacheLife } from 'next/cache';
 import { ProductCard } from '@/components/product-card';
 import {
   fetchFeaturedProducts,
@@ -5,6 +6,12 @@ import {
 } from '@/lib/server/api-client';
 
 export async function FeaturedProducts() {
+  'use cache';
+  cacheLife({
+    stale: 60 * 15, // 15 minutes
+    revalidate: 60 * 15,
+    expire: 60 * 60, // 1 hour hard expiry
+  });
   const products = await fetchFeaturedProducts();
 
   if (!products.length) {

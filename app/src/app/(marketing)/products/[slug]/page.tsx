@@ -8,7 +8,8 @@ import { formatPrice } from '@/lib/format-price';
 import { fetchProductBySlug, fetchProductStock } from '@/lib/server/api-client';
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'SWAG Store';
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://swag-store.vercel.app';
+const APP_URL =
+  process.env.NEXT_PUBLIC_APP_URL ?? 'https://swag-store.vercel.app';
 
 // Memoized per request — called in both generateMetadata and ProductPage
 // but executed only once
@@ -17,7 +18,7 @@ const getProduct = cache((slug: string) => fetchProductBySlug(slug));
 interface Props {
   params: Promise<{ slug: string }>;
 }
-
+/*
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
@@ -52,7 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: url,
     },
   };
-}
+}*/
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;

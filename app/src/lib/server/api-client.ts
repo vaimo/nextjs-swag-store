@@ -8,7 +8,7 @@ async function apiFetch<T>(path: string): Promise<T> {
     headers: {
       'x-vercel-protection-bypass': BYPASS_TOKEN,
     },
-    next: { revalidate: 60 }, // ISR: revalidate every 60 seconds
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) {

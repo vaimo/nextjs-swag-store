@@ -52,4 +52,3 @@ export function useCartFetch() {
 
   return { cartFetch, token };
 }
-

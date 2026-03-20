@@ -31,7 +31,9 @@ export function SearchForm({
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') { onSearch(); }
+            if (e.key === 'Enter') {
+              onSearch();
+            }
           }}
           placeholder="Search products…"
           className="w-full border py-2 pl-9 pr-4 text-sm outline-none focus:border-black"
@@ -59,4 +61,3 @@ export function SearchForm({
     </div>
   );
 }
-
