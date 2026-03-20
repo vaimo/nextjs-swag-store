@@ -44,12 +44,32 @@ export const initCart = createAsyncThunk(
   async (_, { getState }) => {
     const state = (getState() as { cart: CartState }).cart;
 
-    // Already have a valid token in Redux state (rehydrated by redux-persist)
+    // Token exists — fetch current cart from API to sync state
     if (state.token && state.expiresAt && Date.now() < state.expiresAt) {
-      return null; // no-op
+      const res = await fetch('/api/cart', {
+        headers: { 'x-cart-token': state.token },
+      });
+
+      // Token expired on the server side — fall through to create a new cart
+      if (res.ok) {
+        const data = await res.json();
+        return {
+          token: state.token,
+          expiresAt: state.expiresAt,
+          items: data.data.items,
+          totalItems: data.data.totalItems,
+          subtotal: data.data.subtotal,
+          currency: data.data.currency,
+        };
+      }
     }
 
-    // Create a new cart
+    // No token or expired — create a new cart
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_EXPIRY_KEY);
+    }
+
     const res = await fetch('/api/cart/create', { method: 'POST' });
     if (!res.ok) {
       throw new Error('Failed to create cart');
@@ -64,7 +84,7 @@ export const initCart = createAsyncThunk(
       localStorage.setItem(STORAGE_EXPIRY_KEY, String(expiresAt));
     }
 
-    return { token, expiresAt };
+    return { token, expiresAt, items: [], totalItems: 0, subtotal: 0, currency: 'USD' };
   }
 );
 
@@ -104,10 +124,13 @@ const cartSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(initCart.fulfilled, (state, action) => {
-        // null means token already existed — keep persisted state as-is
         if (action.payload) {
           state.token = action.payload.token;
           state.expiresAt = action.payload.expiresAt;
+          state.items = action.payload.items;
+          state.totalItems = action.payload.totalItems;
+          state.subtotal = action.payload.subtotal;
+          state.currency = action.payload.currency;
         }
         state.status = 'idle';
       })
