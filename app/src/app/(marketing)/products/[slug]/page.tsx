@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -6,25 +7,56 @@ import { StockIndicator } from '@/components/stock-indicator';
 import { formatPrice } from '@/lib/format-price';
 import { fetchProductBySlug, fetchProductStock } from '@/lib/server/api-client';
 
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'SWAG Store';
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://swag-store.vercel.app';
+
+// Memoized per request — called in both generateMetadata and ProductPage
+// but executed only once
+const getProduct = cache((slug: string) => fetchProductBySlug(slug));
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = await fetchProductBySlug(slug);
+  const product = await getProduct(slug);
+
   if (!product) {
     return { title: 'Product Not Found' };
   }
+
+  const image = product.images[0];
+  const url = `${APP_URL}/products/${product.slug}`;
+
   return {
     title: product.name,
     description: product.description,
+    openGraph: {
+      title: `${product.name} | ${APP_NAME}`,
+      description: product.description,
+      url,
+      siteName: APP_NAME,
+      type: 'website',
+      images: image
+        ? [{ url: image, alt: product.name, width: 800, height: 800 }]
+        : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.name} | ${APP_NAME}`,
+      description: product.description,
+      images: image ? [image] : [],
+    },
+    alternates: {
+      canonical: url,
+    },
   };
 }
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = await fetchProductBySlug(slug);
+  const product = await getProduct(slug);
 
   if (!product) {
     notFound();
