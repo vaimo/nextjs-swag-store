@@ -10,7 +10,7 @@ interface CartItemsProps {
 export function CartItems({ items, onClose }: CartItemsProps) {
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-full gap-3 text-gray-400">
+      <div className="flex h-full flex-col items-center justify-center gap-3 text-gray-400">
         <ShoppingBag size={40} strokeWidth={1} />
         <p className="text-sm">Your cart is empty</p>
       </div>
@@ -20,7 +20,7 @@ export function CartItems({ items, onClose }: CartItemsProps) {
   return (
     <ul className="flex flex-col gap-4">
       {items.map((item) => (
-        <CartItemRow key={item.productId} item={item} onClose={onClose} />
+        <CartItemRow item={item} key={item.productId} onClose={onClose} />
       ))}
     </ul>
   );

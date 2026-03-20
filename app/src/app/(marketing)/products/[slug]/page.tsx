@@ -1,10 +1,10 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import type { Metadata } from 'next';
-import { fetchProductBySlug, fetchProductStock } from '@/lib/server/api-client';
 import { AddToCart } from '@/components/add-to-cart';
-import { formatPrice } from '@/lib/format-price';
 import { StockIndicator } from '@/components/stock-indicator';
+import { formatPrice } from '@/lib/format-price';
+import { fetchProductBySlug, fetchProductStock } from '@/lib/server/api-client';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -13,7 +13,9 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await fetchProductBySlug(slug);
-  if (!product) return { title: 'Product Not Found' };
+  if (!product) {
+    return { title: 'Product Not Found' };
+  }
   return {
     title: product.name,
     description: product.description,
@@ -24,7 +26,9 @@ export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
   const product = await fetchProductBySlug(slug);
 
-  if (!product) notFound();
+  if (!product) {
+    notFound();
+  }
 
   const stock = await fetchProductStock(product.slug);
   const inStock = stock?.inStock ?? true;
@@ -32,15 +36,15 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="mx-auto py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
         <div className="relative aspect-square bg-gray-50">
           <Image
-            src={product.images[0] ?? ''}
             alt={product.name}
+            className="object-cover"
             fill
             priority
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
+            src={product.images[0] ?? ''}
           />
           <StockIndicator stock={stock} />
         </div>
@@ -48,14 +52,14 @@ export default async function ProductPage({ params }: Props) {
         {/* Product Info */}
         <div className="flex flex-col gap-6">
           {/* Category breadcrumb */}
-          <span className="text-xs uppercase tracking-widest text-gray-400">
+          <span className="text-gray-400 text-xs uppercase tracking-widest">
             {product.category}
           </span>
 
           {/* Name & Price */}
           <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold leading-tight">{product.name}</h1>
-            <p className="text-2xl font-semibold">
+            <h1 className="font-bold text-3xl leading-tight">{product.name}</h1>
+            <p className="font-semibold text-2xl">
               {formatPrice(product.price, product.currency)}
             </p>
           </div>
@@ -69,8 +73,8 @@ export default async function ProductPage({ params }: Props) {
             <div className="flex flex-wrap gap-2">
               {product.tags.map((tag) => (
                 <span
+                  className="border px-2 py-1 text-gray-500 text-xs uppercase tracking-wide"
                   key={tag}
-                  className="text-xs px-2 py-1 border text-gray-500 uppercase tracking-wide"
                 >
                   {tag}
                 </span>
@@ -80,9 +84,9 @@ export default async function ProductPage({ params }: Props) {
 
           {/* Quantity + Add to cart */}
           <AddToCart
-            productId={product.id}
-            maxQuantity={quantity}
             inStock={inStock}
+            maxQuantity={quantity}
+            productId={product.id}
           />
         </div>
       </div>

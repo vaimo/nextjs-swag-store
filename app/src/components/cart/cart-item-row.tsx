@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Minus, Plus, Trash2 } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setCart } from '@/store/cart-slice';
+import { useState } from 'react';
 import { formatPrice } from '@/lib/format-price';
 import type { CartItem } from '@/store/cart-slice';
+import { setCart } from '@/store/cart-slice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 interface CartItemRowProps {
   item: CartItem;
@@ -20,7 +20,9 @@ export function CartItemRow({ item, onClose }: CartItemRowProps) {
   const [loading, setLoading] = useState(false);
 
   const update = async (quantity: number) => {
-    if (!token) return;
+    if (!token) {
+      return;
+    }
     setLoading(true);
     try {
       const method = quantity === 0 ? 'DELETE' : 'PATCH';
@@ -50,52 +52,55 @@ export function CartItemRow({ item, onClose }: CartItemRowProps) {
 
   return (
     <li className="flex gap-4 border-b pb-4">
-      <div className="relative w-16 h-16 shrink-0 bg-gray-50">
+      <div className="relative h-16 w-16 shrink-0 bg-gray-50">
         <Image
-          src={item.product.images[0] ?? ''}
           alt={item.product.name}
+          className="object-cover"
           fill
           sizes="64px"
-          className="object-cover"
+          src={item.product.images[0] ?? ''}
         />
       </div>
-      <div className="flex flex-col gap-1 flex-1 min-w-0">
+      <div className="flex min-w-0 flex-1 flex-col gap-1">
         <Link
+          className="truncate font-medium text-sm leading-snug hover:underline"
           href={`/products/${item.product.slug}`}
           onClick={onClose}
-          className="text-sm font-medium leading-snug hover:underline truncate"
         >
           {item.product.name}
         </Link>
-        <p className="text-sm font-semibold">
+        <p className="font-semibold text-sm">
           {formatPrice(item.lineTotal, item.product.currency)}
         </p>
         {/* Quantity controls */}
-        <div className="flex items-center gap-2 mt-1">
+        <div className="mt-1 flex items-center gap-2">
           <div className="flex items-center border">
             <button
-              onClick={() => update(item.quantity - 1)}
-              disabled={loading}
               aria-label="Decrease quantity"
-              className="p-1 hover:bg-gray-100 disabled:opacity-30 transition"
+              className="p-1 transition hover:bg-gray-100 disabled:opacity-30"
+              disabled={loading}
+              onClick={() => update(item.quantity - 1)}
+              type="button"
             >
               <Minus size={12} />
             </button>
             <span className="w-8 text-center text-sm">{item.quantity}</span>
             <button
-              onClick={() => update(item.quantity + 1)}
-              disabled={loading}
               aria-label="Increase quantity"
-              className="p-1 hover:bg-gray-100 disabled:opacity-30 transition"
+              className="p-1 transition hover:bg-gray-100 disabled:opacity-30"
+              disabled={loading}
+              onClick={() => update(item.quantity + 1)}
+              type="button"
             >
               <Plus size={12} />
             </button>
           </div>
           <button
-            onClick={() => update(0)}
-            disabled={loading}
             aria-label="Remove item"
-            className="p-1 text-gray-400 hover:text-red-500 transition disabled:opacity-30"
+            className="p-1 text-gray-400 transition hover:text-red-500 disabled:opacity-30"
+            disabled={loading}
+            onClick={() => update(0)}
+            type="button"
           >
             <Trash2 size={14} />
           </button>

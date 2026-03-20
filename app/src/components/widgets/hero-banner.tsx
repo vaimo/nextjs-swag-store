@@ -32,6 +32,8 @@ export function HeroBanner() {
         <source media="(min-width: 640px)" srcSet={mobile} />
         <img
           {...rest}
+          alt="SWAG Store hero banner"
+          className="w-full object-cover"
           fetchPriority="high"
           style={{
             width: '100%',
@@ -40,35 +42,33 @@ export function HeroBanner() {
             objectFit: 'cover',
             borderRadius: '2px',
           }}
-          className="object-cover w-full"
-          alt="SWAG Store hero banner"
         />
       </picture>
       {/* Gradient overlay with text */}
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
+        className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         style={{
           background:
             'linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.75))',
         }}
       >
-        <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg mb-4">
+        <h1 className="mb-4 font-bold text-5xl text-white drop-shadow-lg md:text-7xl">
           {process.env.NEXT_PUBLIC_APP_NAME || 'SWAG Store'}
         </h1>
-        <p className="text-xl md:text-2xl text-white/90 max-w-2xl drop-shadow mb-8">
+        <p className="mb-8 max-w-2xl text-white/90 text-xl drop-shadow md:text-2xl">
           Build faster, ship smarter, and scale seamlessly with modern web
           technologies.
         </p>
-        <div className="flex gap-4 justify-center">
+        <div className="flex justify-center gap-4">
           <a
+            className="rounded-xs bg-white px-8 py-4 font-medium text-black text-lg transition hover:bg-gray-100"
             href="/search"
-            className="px-8 py-4 bg-white text-black rounded-xs font-medium text-lg hover:bg-gray-100 transition"
           >
             Get Started
           </a>
           <a
+            className="rounded-xs border border-white px-8 py-4 font-medium text-lg text-white transition hover:bg-white/10"
             href="/about"
-            className="px-8 py-4 border border-white text-white rounded-xs font-medium text-lg hover:bg-white/10 transition"
           >
             Learn More
           </a>

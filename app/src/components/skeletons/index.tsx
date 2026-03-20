@@ -11,10 +11,10 @@ export function PageSkeleton() {
 export function FeaturedProductsSkeleton() {
   return (
     <section className="mx-auto py-12">
-      <div className="h-8 w-48 bg-gray-200 animate-pulse mb-8" />
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="flex flex-col gap-3 animate-pulse">
+      <div className="mb-8 h-8 w-48 animate-pulse bg-gray-200" />
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {(['sk-a', 'sk-b', 'sk-c', 'sk-d'] as const).map((id) => (
+          <div className="flex animate-pulse flex-col gap-3" key={id}>
             <div className="aspect-square bg-gray-200" />
             <div className="h-3 w-16 bg-gray-200" />
             <div className="h-4 w-full bg-gray-200" />
@@ -28,8 +28,8 @@ export function FeaturedProductsSkeleton() {
 
 export function ProductDetailSkeleton() {
   return (
-    <div className="mx-auto py-12 animate-pulse">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div className="mx-auto animate-pulse py-12">
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
         <div className="aspect-square bg-gray-200" />
         <div className="flex flex-col gap-6">
           <div className="h-3 w-20 bg-gray-200" />
@@ -38,7 +38,7 @@ export function ProductDetailSkeleton() {
             <div className="h-6 w-24 bg-gray-200" />
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-gray-200" />
+            <div className="h-2 w-2 rounded-full bg-gray-200" />
             <div className="h-3 w-28 bg-gray-200" />
           </div>
           <div className="flex flex-col gap-2">

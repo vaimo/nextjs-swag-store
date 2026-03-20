@@ -3,15 +3,17 @@ import { fetchPromotion } from '@/lib/server/api-client';
 export async function PromoBanner() {
   const promo = await fetchPromotion();
 
-  if (!promo?.active) return null;
+  if (!promo?.active) {
+    return null;
+  }
 
   return (
-    <div className="w-full bg-[#333] text-[#f7f7f7] text-center py-2 px-4 text-sm">
+    <div className="w-full bg-[#333] px-4 py-2 text-center text-[#f7f7f7] text-sm">
       <span className="font-semibold">{promo.title}</span>
       {' — '}
       {promo.description}
       {' Use code '}
-      <span className="font-mono font-bold tracking-wider border border-white/40 px-1.5 py-0.5 mx-1">
+      <span className="mx-1 border border-white/40 px-1.5 py-0.5 font-bold font-mono tracking-wider">
         {promo.code}
       </span>
       {' for '}

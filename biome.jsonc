@@ -1,4 +1,11 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
-  "extends": ["ultracite"]
+  "extends": ["ultracite"],
+  "files": {
+    "includes": [
+      "**",
+      "!packages/ui/src/styles/globals.css",
+      "!app/src/app/globals.css"
+    ]
+  }
 }

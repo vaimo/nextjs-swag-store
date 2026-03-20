@@ -1,10 +1,11 @@
-import { Suspense } from 'react';
-import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { Header } from '@/components/header';
+import type { Metadata } from 'next';
+import { Inter, JetBrains_Mono } from 'next/font/google';
+import Script from 'next/script';
+import { Suspense } from 'react';
 import { Footer } from '@/components/footer';
+import { Header } from '@/components/header';
 import { PromoBanner } from '@/components/widgets/promo-banner';
 import { ReduxProvider } from '@/store/redux-provider';
 
@@ -39,37 +40,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html className={`${inter.variable} ${jetbrainsMono.variable}`} lang="en">
       <body>
         <ReduxProvider>
-          <div className="min-h-screen flex flex-col">
+          <div className="flex min-h-screen flex-col">
             <Suspense fallback={null}>
               <PromoBanner />
             </Suspense>
             <Header />
 
             {/* Main Content */}
-            <main className="flex-1 container mx-auto px-4 py-8">
+            <main className="container mx-auto flex-1 px-4 py-8">
               {children}
             </main>
 
             <Footer />
           </div>
           {/* TODO: Convert to next/script (Section 4 Lesson 3) */}
-          <script
+          <Script
             src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
-            async
+            strategy="afterInteractive"
           />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'GA_MEASUREMENT_ID');
-            `,
-            }}
-          />
+          <Script id="gtag-init" strategy="afterInteractive">{`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'GA_MEASUREMENT_ID');
+          `}</Script>
           <Analytics />
           <SpeedInsights />
         </ReduxProvider>

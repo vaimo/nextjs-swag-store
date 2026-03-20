@@ -1,7 +1,7 @@
 import 'server-only';
 
-const BASE_URL = process.env.VERCEL_BASE_URL!;
-const BYPASS_TOKEN = process.env.VERCEL_BYPASS_TOKEN!;
+const BASE_URL = process.env.VERCEL_BASE_URL ?? '';
+const BYPASS_TOKEN = process.env.VERCEL_BYPASS_TOKEN ?? '';
 
 async function apiFetch<T>(path: string): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`, {

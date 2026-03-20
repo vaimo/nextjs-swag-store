@@ -1,14 +1,24 @@
 'use client';
 
-import { useState } from 'react';
 import { Minus, Plus, ShoppingCart } from 'lucide-react';
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { useState } from 'react';
 import { setCart } from '@/store/cart-slice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 interface AddToCartProps {
   productId: string;
   maxQuantity: number;
   inStock: boolean;
+}
+
+function getButtonLabel(isLoading: boolean, adding: boolean): string {
+  if (isLoading) {
+    return 'Creating cart…';
+  }
+  if (adding) {
+    return 'Adding…';
+  }
+  return 'Add to Cart';
 }
 
 export function AddToCart({ productId, maxQuantity, inStock }: AddToCartProps) {
@@ -23,7 +33,9 @@ export function AddToCart({ productId, maxQuantity, inStock }: AddToCartProps) {
   const increment = () => setQuantity((q) => Math.min(maxQuantity, q + 1));
 
   const handleAddToCart = async () => {
-    if (!token) return;
+    if (!token) {
+      return;
+    }
     setAdding(true);
     try {
       const res = await fetch('/api/cart', {
@@ -54,24 +66,26 @@ export function AddToCart({ productId, maxQuantity, inStock }: AddToCartProps) {
     <div className="flex flex-col gap-4">
       {/* Quantity selector */}
       <div className="flex items-center gap-3">
-        <span className="text-sm font-medium text-gray-600">Quantity</span>
+        <span className="font-medium text-gray-600 text-sm">Quantity</span>
         <div className="flex items-center border">
           <button
-            onClick={decrement}
-            disabled={disabled || quantity <= 1}
-            className="p-2 hover:bg-gray-100 disabled:opacity-30 transition"
             aria-label="Decrease quantity"
+            className="p-2 transition hover:bg-gray-100 disabled:opacity-30"
+            disabled={disabled || quantity <= 1}
+            onClick={decrement}
+            type="button"
           >
             <Minus size={14} />
           </button>
-          <span className="w-10 text-center text-sm font-medium">
+          <span className="w-10 text-center font-medium text-sm">
             {quantity}
           </span>
           <button
-            onClick={increment}
-            disabled={disabled || quantity >= maxQuantity}
-            className="p-2 hover:bg-gray-100 disabled:opacity-30 transition cursor-pointer"
             aria-label="Increase quantity"
+            className="cursor-pointer p-2 transition hover:bg-gray-100 disabled:opacity-30"
+            disabled={disabled || quantity >= maxQuantity}
+            onClick={increment}
+            type="button"
           >
             <Plus size={14} />
           </button>
@@ -80,12 +94,13 @@ export function AddToCart({ productId, maxQuantity, inStock }: AddToCartProps) {
 
       {/* Add to cart button */}
       <button
-        onClick={handleAddToCart}
+        className="flex w-full cursor-pointer items-center justify-center gap-2 bg-black px-6 py-3 font-medium text-sm text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
         disabled={disabled || isLoading || adding}
-        className="cursor-pointer flex items-center justify-center gap-2 w-full py-3 px-6 bg-black text-white font-medium text-sm hover:bg-gray-800 transition disabled:opacity-40 disabled:cursor-not-allowed"
+        onClick={handleAddToCart}
+        type="button"
       >
         <ShoppingCart size={18} />
-        {isLoading ? 'Creating cart…' : adding ? 'Adding…' : 'Add to Cart'}
+        {getButtonLabel(isLoading, adding)}
       </button>
     </div>
   );

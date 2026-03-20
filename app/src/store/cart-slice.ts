@@ -1,6 +1,6 @@
 import {
-  createSlice,
   createAsyncThunk,
+  createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
 import type { Product } from '@/lib/server/api-client';
@@ -51,7 +51,9 @@ export const initCart = createAsyncThunk(
 
     // Create a new cart
     const res = await fetch('/api/cart/create', { method: 'POST' });
-    if (!res.ok) throw new Error('Failed to create cart');
+    if (!res.ok) {
+      throw new Error('Failed to create cart');
+    }
 
     const data = await res.json();
     const token: string = data.data.token;

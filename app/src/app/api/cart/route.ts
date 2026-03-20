@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
-const BASE_URL = process.env.VERCEL_BASE_URL!;
-const BYPASS_TOKEN = process.env.VERCEL_BYPASS_TOKEN!;
+const BASE_URL = process.env.VERCEL_BASE_URL ?? '';
+const BYPASS_TOKEN = process.env.VERCEL_BYPASS_TOKEN ?? '';
 
 export async function GET(req: NextRequest) {
   const cartToken = req.headers.get('x-cart-token');

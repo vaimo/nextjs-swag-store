@@ -13,17 +13,17 @@ const galleryImages = [
 export function GalleryGrid() {
   return (
     <div className="grid grid-cols-3 gap-4">
-      {galleryImages.map((image, i) => (
-        <div key={i} className="relative aspect-4/3">
+      {galleryImages.map((image) => (
+        <div className="relative aspect-4/3" key={image.src}>
           <Image
-            src={image.src}
             alt={image.alt}
-            fill
-            quality={75}
-            placeholder="blur"
             blurDataURL={blurDataURL}
-            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
+            fill
+            placeholder="blur"
+            quality={75}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            src={image.src}
           />
         </div>
       ))}

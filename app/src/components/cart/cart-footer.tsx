@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Trash2 } from 'lucide-react';
+import Link from 'next/link';
 import { formatPrice } from '@/lib/format-price';
 
 interface CartFooterProps {
@@ -16,21 +16,22 @@ export function CartFooter({
   onClear,
 }: CartFooterProps) {
   return (
-    <div className="px-6 py-4 border-t flex flex-col gap-3">
-      <div className="flex justify-between text-sm font-semibold">
+    <div className="flex flex-col gap-3 border-t px-6 py-4">
+      <div className="flex justify-between font-semibold text-sm">
         <span>Subtotal</span>
         <span>{formatPrice(subtotal, currency)}</span>
       </div>
       <Link
+        className="w-full bg-black py-3 text-center font-medium text-sm text-white transition hover:bg-gray-800"
         href="/cart"
         onClick={onClose}
-        className="w-full py-3 bg-black text-white text-sm font-medium text-center hover:bg-gray-800 transition"
       >
         View Cart
       </Link>
       <button
+        className="flex w-full cursor-pointer items-center justify-center gap-2 py-2 text-red-500 text-sm transition hover:text-red-700"
         onClick={onClear}
-        className="flex items-center justify-center gap-2 w-full py-2 text-sm text-red-500 hover:text-red-700 transition cursor-pointer"
+        type="button"
       >
         <Trash2 size={14} />
         Clear cart

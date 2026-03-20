@@ -1,9 +1,9 @@
-import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { HeroBanner } from '@/components/widgets/hero-banner';
-import { GalleryGrid } from '@/components/widgets/gallery-grid';
-import { FeaturedProducts } from '@/components/widgets/featured-products';
+import { Suspense } from 'react';
 import { FeaturedProductsSkeleton } from '@/components/skeletons';
+import { FeaturedProducts } from '@/components/widgets/featured-products';
+import { GalleryGrid } from '@/components/widgets/gallery-grid';
+import { HeroBanner } from '@/components/widgets/hero-banner';
 
 export const metadata: Metadata = {
   title: 'SWAG Homepage',

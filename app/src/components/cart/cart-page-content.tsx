@@ -1,12 +1,11 @@
 'use client';
 
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { clearCart, initCart } from '@/store/cart-slice';
+import { ShoppingBag, Trash2 } from 'lucide-react';
+import Link from 'next/link';
 import { CartItems } from '@/components/cart/cart-items';
 import { formatPrice } from '@/lib/format-price';
-import { Trash2 } from 'lucide-react';
-import { ShoppingBag } from 'lucide-react';
-import Link from 'next/link';
+import { clearCart, initCart } from '@/store/cart-slice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export function CartPageContent() {
   const { items, totalItems, subtotal, currency } = useAppSelector(
@@ -21,12 +20,12 @@ export function CartPageContent() {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 gap-4 text-gray-400">
+      <div className="flex flex-col items-center justify-center gap-4 py-24 text-gray-400">
         <ShoppingBag size={56} strokeWidth={1} />
         <p className="text-lg">Your cart is empty</p>
         <Link
+          className="mt-2 bg-black px-6 py-3 font-medium text-sm text-white transition hover:bg-gray-800"
           href="/"
-          className="mt-2 px-6 py-3 bg-black text-white text-sm font-medium hover:bg-gray-800 transition"
         >
           Continue Shopping
         </Link>
@@ -35,35 +34,39 @@ export function CartPageContent() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+    <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
       {/* Items */}
       <div className="lg:col-span-2">
         <CartItems items={items} />
       </div>
 
       {/* Summary */}
-      <div className="flex flex-col gap-4 border p-6 h-fit">
-        <h2 className="text-lg font-semibold border-b pb-4">Order Summary</h2>
+      <div className="flex h-fit flex-col gap-4 border p-6">
+        <h2 className="border-b pb-4 font-semibold text-lg">Order Summary</h2>
         <div className="flex justify-between text-sm">
           <span className="text-gray-500">Items ({totalItems})</span>
           <span>{formatPrice(subtotal, currency)}</span>
         </div>
-        <div className="flex justify-between text-sm font-bold border-t pt-4">
+        <div className="flex justify-between border-t pt-4 font-bold text-sm">
           <span>Subtotal</span>
           <span>{formatPrice(subtotal, currency)}</span>
         </div>
-        <button className="w-full py-3 bg-black text-white text-sm font-medium hover:bg-gray-800 transition">
+        <button
+          className="w-full bg-black py-3 font-medium text-sm text-white transition hover:bg-gray-800"
+          type="button"
+        >
           Proceed to Checkout
         </button>
         <Link
+          className="text-center text-gray-500 text-sm transition hover:text-black"
           href="/"
-          className="text-center text-sm text-gray-500 hover:text-black transition"
         >
           Continue Shopping
         </Link>
         <button
+          className="flex w-full cursor-pointer items-center justify-center gap-2 py-2 text-red-500 text-sm transition hover:text-red-700"
           onClick={handleClear}
-          className="flex items-center justify-center gap-2 w-full py-2 text-sm text-red-500 hover:text-red-700 transition cursor-pointer"
+          type="button"
         >
           <Trash2 size={14} />
           Clear cart
