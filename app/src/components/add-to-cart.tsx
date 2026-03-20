@@ -4,6 +4,7 @@ import { Minus, Plus, ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 import { setCart } from '@/store/cart-slice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useCartFetch } from '@/hooks/use-cart-fetch';
 
 interface AddToCartProps {
   productId: string;
@@ -27,6 +28,7 @@ export function AddToCart({ productId, maxQuantity, inStock }: AddToCartProps) {
   const [adding, setAdding] = useState(false);
   const { token, status } = useAppSelector((s) => s.cart);
   const dispatch = useAppDispatch();
+  const { cartFetch } = useCartFetch();
   const isLoading = status === 'loading';
 
   const decrement = () => setQuantity((q) => Math.max(1, q - 1));
@@ -38,12 +40,8 @@ export function AddToCart({ productId, maxQuantity, inStock }: AddToCartProps) {
     }
     setAdding(true);
     try {
-      const res = await fetch('/api/cart', {
+      const res = await cartFetch('/api/cart', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-cart-token': token,
-        },
         body: JSON.stringify({ productId, quantity }),
       });
       if (res.ok) {

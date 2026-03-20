@@ -8,6 +8,7 @@ import { formatPrice } from '@/lib/format-price';
 import type { CartItem } from '@/store/cart-slice';
 import { setCart } from '@/store/cart-slice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useCartFetch } from '@/hooks/use-cart-fetch';
 
 interface CartItemRowProps {
   item: CartItem;
@@ -17,6 +18,7 @@ interface CartItemRowProps {
 export function CartItemRow({ item, onClose }: CartItemRowProps) {
   const dispatch = useAppDispatch();
   const token = useAppSelector((s) => s.cart.token);
+  const { cartFetch } = useCartFetch();
   const [loading, setLoading] = useState(false);
 
   const update = async (quantity: number) => {
@@ -26,12 +28,8 @@ export function CartItemRow({ item, onClose }: CartItemRowProps) {
     setLoading(true);
     try {
       const method = quantity === 0 ? 'DELETE' : 'PATCH';
-      const res = await fetch(`/api/cart/${item.productId}`, {
+      const res = await cartFetch(`/api/cart/${item.productId}`, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-          'x-cart-token': token,
-        },
         ...(quantity > 0 && { body: JSON.stringify({ quantity }) }),
       });
       if (res.ok) {
