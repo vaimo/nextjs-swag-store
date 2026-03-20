@@ -63,3 +63,18 @@ export function ProductDetailSkeleton() {
     </div>
   );
 }
+
+export function SearchSkeleton() {
+  return (
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+      {(['sk-a', 'sk-b', 'sk-c', 'sk-d', 'sk-e'] as const).map((id) => (
+        <div key={id} className="flex animate-pulse flex-col gap-2">
+          <div className="aspect-square bg-gray-200" />
+          <div className="h-3 w-16 bg-gray-200" />
+          <div className="h-4 w-full bg-gray-200" />
+          <div className="h-4 w-12 bg-gray-200" />
+        </div>
+      ))}
+    </div>
+  );
+}
