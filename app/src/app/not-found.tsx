@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Page Not Found | ' + (process.env.NEXT_PUBLIC_APP_NAME || 'SWAG Store'),
+  title:
+    'Page Not Found | ' + (process.env.NEXT_PUBLIC_APP_NAME || 'SWAG Store'),
   description: 'The page you are looking for could not be found.',
 };
 
@@ -32,4 +33,3 @@ export default function NotFound() {
     </div>
   );
 }
-
