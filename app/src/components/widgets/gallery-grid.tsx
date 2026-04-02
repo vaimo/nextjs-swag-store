@@ -1,3 +1,4 @@
+import { cacheLife } from 'next/cache';
 import Image from 'next/image';
 
 // Simple gray blur placeholder (base64 encoded 1x1 SVG)
@@ -10,7 +11,9 @@ const galleryImages = [
   { src: 'https://picsum.photos/800/600?random=3', alt: 'Forest path' },
 ];
 
-export function GalleryGrid() {
+export async function GalleryGrid() {
+  'use cache';
+  cacheLife('static');
   return (
     <div className="grid grid-cols-3 gap-4">
       {galleryImages.map((image) => (

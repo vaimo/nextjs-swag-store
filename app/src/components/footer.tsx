@@ -2,11 +2,7 @@ import { cacheLife } from 'next/cache';
 
 async function CopyrightYear() {
   'use cache';
-  cacheLife({
-    stale: 60 * 60 * 24,
-    revalidate: 60 * 60 * 24,
-    expire: 60 * 60 * 24 * 365,
-  });
+  cacheLife('daily');
   return <>{new Date().getFullYear()}</>;
 }
 

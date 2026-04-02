@@ -1,24 +1,27 @@
-import { cacheLife } from 'next/cache';
+import { cacheLife, cacheTag } from 'next/cache';
 import { ProductCard } from '@/components/product-card';
 import {
   fetchFeaturedProducts,
   fetchProductStock,
 } from '@/lib/server/api-client';
 
-export async function FeaturedProducts() {
+// Cached: product list changes rarely — 15 min is fine
+async function getFeaturedProducts() {
   'use cache';
-  cacheLife({
-    stale: 60 * 15, // 15 minutes
-    revalidate: 60 * 15,
-    expire: 60 * 60, // 1 hour hard expiry
-  });
-  const products = await fetchFeaturedProducts();
+  cacheLife('products');
+  cacheTag('products', 'featured-products');
+  return fetchFeaturedProducts();
+}
+
+// Not cached: stock is real-time data, must always be fresh
+export async function FeaturedProducts() {
+  const products = await getFeaturedProducts();
 
   if (!products.length) {
     return null;
   }
 
-  // Fetch stock for all products in parallel
+  // Always fetch fresh stock in parallel
   const stocks = await Promise.all(
     products.map((p) => fetchProductStock(p.slug))
   );

@@ -1,6 +1,9 @@
+import { cacheLife } from 'next/cache';
 import { getImageProps } from 'next/image';
 
-export function HeroBanner() {
+export async function HeroBanner() {
+  'use cache';
+  cacheLife('static');
   const common = { alt: 'SWAG Store hero banner', sizes: '100vw' };
 
   // Desktop: wide landscape

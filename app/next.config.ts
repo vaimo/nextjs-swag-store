@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
       revalidate: 60 * 15,
       expire: 60 * 60, // 1 hour
     },
+    daily: {
+      stale: 60 * 60 * 24, // 24 hours
+      revalidate: 60 * 60 * 24,
+      expire: 60 * 60 * 24 * 365, // 1 year
+    },
+    static: {
+      stale: Number.MAX_SAFE_INTEGER,
+      revalidate: Number.MAX_SAFE_INTEGER,
+      expire: Number.MAX_SAFE_INTEGER,
+    },
   },
   images: {
     remotePatterns: [

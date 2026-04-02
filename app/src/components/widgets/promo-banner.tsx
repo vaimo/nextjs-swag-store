@@ -1,6 +1,11 @@
+import { cacheLife, cacheTag } from 'next/cache';
 import { fetchPromotion } from '@/lib/server/api-client';
 
 export async function PromoBanner() {
+  'use cache';
+  cacheLife('products');
+  cacheTag('promotions');
+
   const promo = await fetchPromotion();
 
   if (!promo?.active) {
