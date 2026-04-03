@@ -7,8 +7,13 @@ export async function GET(req: NextRequest) {
   const qs = req.nextUrl.searchParams.toString();
   const res = await fetch(`${BASE_URL}/products?${qs}`, {
     headers: { 'x-vercel-protection-bypass': BYPASS_TOKEN },
-    next: { revalidate: 0 },
+    next: { revalidate: 60 },
   });
   const data = await res.json();
-  return NextResponse.json(data, { status: res.status });
+  return NextResponse.json(data, {
+    status: res.status,
+    headers: {
+      'Cache-Control': 's-maxage=60, stale-while-revalidate=300',
+    },
+  });
 }
