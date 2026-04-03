@@ -87,8 +87,16 @@ export function AddToCart({ productId, maxQuantity, inStock }: AddToCartProps) {
           >
             <Plus size={14} />
           </button>
+
         </div>
       </div>
+
+      {/* Max quantity warning */}
+      {quantity === maxQuantity && inStock && (
+        <p className="text-amber-600 text-xs">
+          Only {maxQuantity} in stock.
+        </p>
+      )}
 
       {/* Add to cart button */}
       <button
