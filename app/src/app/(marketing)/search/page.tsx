@@ -17,9 +17,9 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${APP_URL}/globe.svg`,
+        url: `${APP_URL}/swag.png`,
         width: 1200,
-        height: 630,
+        height: 900,
         alt: `${APP_NAME} — Search`,
       },
     ],
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `Search | ${APP_NAME}`,
     description: `Search and filter products in the ${APP_NAME} catalog.`,
-    images: [`${APP_URL}/globe.svg`],
+    images: [`${APP_URL}/swag.png`],
   },
   alternates: {
     canonical: `${APP_URL}/search`,

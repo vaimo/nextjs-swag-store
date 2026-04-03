@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${APP_URL}/globe.svg`,
+        url: `${APP_URL}/swag.png`,
         width: 1200,
-        height: 630,
+        height: 900,
         alt: `${APP_NAME} — Home`,
       },
     ],
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: APP_NAME,
     description: DESCRIPTION,
-    images: [`${APP_URL}/globe.svg`],
+    images: [`${APP_URL}/swag.png`],
   },
   alternates: {
     canonical: APP_URL
