@@ -13,9 +13,6 @@ interface AddToCartProps {
 }
 
 function getButtonLabel(isLoading: boolean, adding: boolean): string {
-  if (isLoading) {
-    return 'Creating cart…';
-  }
   if (adding) {
     return 'Adding…';
   }
@@ -101,7 +98,7 @@ export function AddToCart({ productId, maxQuantity, inStock }: AddToCartProps) {
       {/* Add to cart button */}
       <button
         className="flex w-full cursor-pointer items-center justify-center gap-2 bg-black px-6 py-3 font-medium text-sm text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
-        disabled={disabled || isLoading || adding}
+        disabled={disabled || adding}
         onClick={handleAddToCart}
         type="button"
       >
