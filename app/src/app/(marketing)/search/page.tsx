@@ -2,6 +2,7 @@
 
 import { Search } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ProductCard } from '@/components/product-card';
 import { SearchForm } from '@/components/search-form';
 import { SearchSkeleton } from '@/components/skeletons';
@@ -23,24 +24,37 @@ function ProductGrid({ products }: { products: Product[] }) {
 }
 
 export default function SearchPage() {
-  const [query, setQuery] = useState('');
-  const [category, setCategory] = useState('');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [query, setQuery] = useState(() => searchParams.get('q') ?? '');
+  const [category, setCategory] = useState(() => searchParams.get('category') ?? '');
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [hasSearched, setHasSearched] = useState(false);
+  const [hasSearched, setHasSearched] = useState(
+    () => !!(searchParams.get('q') || searchParams.get('category'))
+  );
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Sync state to URL
+  const deepLinkSearchUrl = useCallback(
+    (q: string, cat: string) => {
+      const params = new URLSearchParams();
+      if (q) params.set('q', q);
+      if (cat) params.set('category', cat);
+      const qs = params.toString();
+      router.replace(qs ? `/search?${qs}` : '/search', { scroll: false });
+    },
+    [router]
+  );
 
   const doSearch = useCallback(async (q: string, cat: string) => {
     setLoading(true);
     try {
       const qs = new URLSearchParams();
-      if (q) {
-        qs.set('search', q);
-      }
-      if (cat) {
-        qs.set('category', cat);
-      }
+      if (q) qs.set('search', q);
+      if (cat) qs.set('category', cat);
       qs.set('limit', '5');
       const res = await fetch(`/api/products?${qs}`);
       const data = await res.json();
@@ -52,37 +66,38 @@ export default function SearchPage() {
     }
   }, []);
 
+  // On mount: run search with whatever is in the URL
   useEffect(() => {
-    doSearch('', '');
+    doSearch(query, category);
     fetch('/api/categories')
       .then((r) => r.json())
       .then((d) => setCategories(d.data ?? []))
       .catch(() => setCategories([]));
-  }, [doSearch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
     if (query.length >= 3 || category) {
       setHasSearched(true);
+      deepLinkSearchUrl(query, category);
       debounceRef.current = setTimeout(() => doSearch(query, category), 400);
     } else if (query.length === 0 && !category && hasSearched) {
       setHasSearched(false);
+      deepLinkSearchUrl('', '');
       doSearch('', '');
     }
+
     return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
+      if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [query, category, hasSearched, doSearch]);
+  }, [query, category, hasSearched, doSearch, deepLinkSearchUrl]);
 
   const triggerSearch = () => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     setHasSearched(true);
+    deepLinkSearchUrl(query, category);
     doSearch(query, category);
   };
 
