@@ -11,7 +11,6 @@ import { ReduxProvider } from '@/store/redux-provider';
 
 import './globals.css';
 
-// Variable font - all weights in single file
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -19,7 +18,6 @@ const inter = Inter({
   adjustFontFallback: true,
 });
 
-// Monospace font for code blocks
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
@@ -56,7 +54,6 @@ export default function RootLayout({
 
             <Footer />
           </div>
-          {/* TODO: Convert to next/script (Section 4 Lesson 3) */}
           <Script
             src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
             strategy="afterInteractive"
