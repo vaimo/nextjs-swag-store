@@ -1,24 +1,34 @@
-import { cache } from 'react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { cacheLife, cacheTag } from 'next/cache';
 import { AddToCart } from '@/components/add-to-cart';
 import { StockIndicator } from '@/components/stock-indicator';
 import { formatPrice } from '@/lib/format-price';
-import { fetchProductBySlug, fetchProductStock } from '@/lib/server/api-client';
+import { fetchProductBySlug, fetchProductStock, fetchAllProducts } from '@/lib/server/api-client';
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'SWAG Store';
 const APP_URL =
   process.env.NEXT_PUBLIC_APP_URL ?? 'https://swag-store.vercel.app';
 
-// Memoized per request — called in both generateMetadata and ProductPage
-// but executed only once
-const getProduct = cache((slug: string) => fetchProductBySlug(slug));
+export async function generateStaticParams() {
+  'use cache';
+  cacheLife('products');
+  const products = await fetchAllProducts();
+  return products.map((p) => ({ slug: p.slug }));
+}
+
+async function getProduct(slug: string) {
+  'use cache';
+  cacheLife('products');
+  cacheTag('products', `product-${slug}`);
+  return fetchProductBySlug(slug);
+}
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
-/*
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
@@ -53,7 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: url,
     },
   };
-}*/
+}
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
