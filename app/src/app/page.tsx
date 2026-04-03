@@ -5,8 +5,8 @@ import { FeaturedProducts } from '@/components/widgets/featured-products';
 import { GalleryGrid } from '@/components/widgets/gallery-grid';
 import { HeroBanner } from '@/components/widgets/hero-banner';
 
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'SWAG Store';
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://swag-store.vercel.app';
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
 const DESCRIPTION = `${APP_NAME} — premium swag and merch. Shop t-shirts, hoodies, bottles and more.`;
 
 export const metadata: Metadata = {

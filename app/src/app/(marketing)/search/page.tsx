@@ -3,8 +3,8 @@ import { Suspense } from 'react';
 import { SearchClient } from './search-client';
 import { SearchSkeleton } from '@/components/skeletons';
 
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'SWAG Store';
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://swag-store.vercel.app';
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
 
 export const metadata: Metadata = {
   title: 'Search',

@@ -7,9 +7,8 @@ import { StockIndicator } from '@/components/stock-indicator';
 import { formatPrice } from '@/lib/format-price';
 import { fetchProductBySlug, fetchProductStock, fetchAllProducts } from '@/lib/server/api-client';
 
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'SWAG Store';
-const APP_URL =
-  process.env.NEXT_PUBLIC_APP_URL ?? 'https://swag-store.vercel.app';
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
 
 export async function generateStaticParams() {
   'use cache';
