@@ -5,10 +5,37 @@ import { FeaturedProducts } from '@/components/widgets/featured-products';
 import { GalleryGrid } from '@/components/widgets/gallery-grid';
 import { HeroBanner } from '@/components/widgets/hero-banner';
 
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'SWAG Store';
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://swag-store.vercel.app';
+const DESCRIPTION = `${APP_NAME} — premium swag and merch. Shop t-shirts, hoodies, bottles and more.`;
+
 export const metadata: Metadata = {
-  title: 'SWAG Homepage',
-  description:
-    'Welcome to our platform! Explore our features and discover how we can help you achieve your goals.',
+  title: 'Home',
+  description: DESCRIPTION,
+  openGraph: {
+    title: APP_NAME,
+    description: DESCRIPTION,
+    url: APP_URL,
+    siteName: APP_NAME,
+    type: 'website',
+    images: [
+      {
+        url: `${APP_URL}/globe.svg`,
+        width: 1200,
+        height: 630,
+        alt: `${APP_NAME} — Home`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: APP_NAME,
+    description: DESCRIPTION,
+    images: [`${APP_URL}/globe.svg`],
+  },
+  alternates: {
+    canonical: APP_URL
+  },
 };
 
 export default function HomePage() {
