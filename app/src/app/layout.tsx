@@ -30,7 +30,8 @@ export const metadata: Metadata = {
     default: process.env.NEXT_PUBLIC_APP_NAME ?? 'SWAG Store',
   },
   description: `${process.env.NEXT_PUBLIC_APP_NAME} - Building the future of web development`,
-};
+  colorScheme: 'only light',
+} as Metadata;
 
 export default function RootLayout({
   children,
