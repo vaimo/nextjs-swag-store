@@ -55,7 +55,7 @@ export async function fetchFeaturedProducts(): Promise<Product[]> {
 }
 
 export async function fetchAllProducts(): Promise<Product[]> {
-  const res = await apiFetch<ProductsResponse>('/products');
+  const res = await apiFetch<ProductsResponse>('/products?limit=10');
   return res.data;
 }
 

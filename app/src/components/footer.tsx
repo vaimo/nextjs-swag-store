@@ -2,11 +2,13 @@ import { cacheLife } from 'next/cache';
 
 async function CopyrightYear() {
   'use cache';
-  cacheLife('daily');
+  cacheLife('static');
   return <>{new Date().getFullYear()}</>;
 }
 
-export function Footer() {
+export async function Footer() {
+  'use cache';
+  cacheLife('static');
   return (
     <footer className="border-t bg-[#333] py-6 text-center text-[#f7f7f7] text-sm">
       <p>
