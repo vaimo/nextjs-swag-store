@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 import { AddToCart } from '@/components/add-to-cart';
 import { StockIndicator } from '@/components/stock-indicator';
 import { formatPrice } from '@/lib/format-price';
@@ -68,6 +69,44 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+async function ProductStockBadge({ slug }: { slug: string }) {
+  const stock = await fetchProductStock(slug);
+  return <StockIndicator stock={stock} />;
+}
+
+async function ProductAddToCart({
+  productId,
+  slug,
+}: {
+  productId: string;
+  slug: string;
+}) {
+  const stock = await fetchProductStock(slug);
+  const inStock = stock?.inStock ?? true;
+  const quantity = stock?.stock ?? 0;
+  return (
+    <AddToCart inStock={inStock} maxQuantity={quantity} productId={productId} />
+  );
+}
+
+function StockBadgeFallback() {
+  return (
+    <span className="absolute top-2 right-2 h-5 w-16 animate-pulse bg-gray-200" />
+  );
+}
+
+function AddToCartFallback() {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-3">
+        <div className="h-3 w-16 animate-pulse bg-gray-200" />
+        <div className="h-9 w-28 animate-pulse bg-gray-200" />
+      </div>
+      <div className="h-11 w-full animate-pulse bg-gray-200" />
+    </div>
+  );
+}
+
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
   const product = await getProduct(slug);
@@ -75,10 +114,6 @@ export default async function ProductPage({ params }: Props) {
   if (!product) {
     notFound();
   }
-
-  const stock = await fetchProductStock(product.slug);
-  const inStock = stock?.inStock ?? true;
-  const quantity = stock?.stock ?? 0;
 
   return (
     <div className="mx-auto py-12">
@@ -92,29 +127,25 @@ export default async function ProductPage({ params }: Props) {
             sizes="(max-width: 768px) 100vw, 50vw"
             src={product.images[0] ?? ''}
           />
-          <StockIndicator stock={stock} />
+          <Suspense fallback={<StockBadgeFallback />}>
+            <ProductStockBadge slug={product.slug} />
+          </Suspense>
         </div>
 
         {/* Product Info */}
         <div className="flex flex-col gap-6">
-          {/* Category breadcrumb */}
           <span className="text-gray-400 text-xs uppercase tracking-widest">
             {product.category}
           </span>
-
-          {/* Name & Price */}
           <div className="flex flex-col gap-2">
             <h1 className="font-bold text-3xl leading-tight">{product.name}</h1>
             <p className="font-semibold text-2xl">
               {formatPrice(product.price, product.currency)}
             </p>
           </div>
-
           <p className="text-gray-600 text-sm leading-relaxed">
             {product.description}
           </p>
-
-          {/* Tags */}
           {product.tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {product.tags.map((tag) => (
@@ -127,13 +158,10 @@ export default async function ProductPage({ params }: Props) {
               ))}
             </div>
           )}
-
           {/* Quantity + Add to cart */}
-          <AddToCart
-            inStock={inStock}
-            maxQuantity={quantity}
-            productId={product.id}
-          />
+          <Suspense fallback={<AddToCartFallback />}>
+            <ProductAddToCart productId={product.id} slug={product.slug} />
+          </Suspense>
         </div>
       </div>
     </div>
