@@ -2,9 +2,9 @@
 
 import { Minus, Plus, ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
+import { useCartFetch } from '@/hooks/use-cart-fetch';
 import { setCart } from '@/store/cart-slice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { useCartFetch } from '@/hooks/use-cart-fetch';
 
 interface AddToCartProps {
   productId: string;
@@ -12,7 +12,7 @@ interface AddToCartProps {
   inStock: boolean;
 }
 
-function getButtonLabel(isLoading: boolean, adding: boolean): string {
+function getButtonLabel(_isLoading: boolean, adding: boolean): string {
   if (adding) {
     return 'Adding…';
   }
@@ -84,15 +84,12 @@ export function AddToCart({ productId, maxQuantity, inStock }: AddToCartProps) {
           >
             <Plus size={14} />
           </button>
-
         </div>
       </div>
 
       {/* Max quantity warning */}
       {quantity === maxQuantity && inStock && (
-        <p className="text-amber-600 text-xs">
-          Only {maxQuantity} in stock.
-        </p>
+        <p className="text-amber-600 text-xs">Only {maxQuantity} in stock.</p>
       )}
 
       {/* Add to cart button */}

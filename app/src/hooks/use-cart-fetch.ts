@@ -1,8 +1,8 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { clearCart, initCart } from '@/store/cart-slice';
 import { useCallback } from 'react';
+import { clearCart, initCart } from '@/store/cart-slice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 type CartFetchOptions = RequestInit & { skipTokenCheck?: boolean };
 
@@ -19,7 +19,7 @@ export function useCartFetch() {
   const cartFetch = useCallback(
     async (url: string, options: CartFetchOptions = {}): Promise<Response> => {
       const makeRequest = async (t: string): Promise<Response> => {
-        return fetch(url, {
+        return await fetch(url, {
           ...options,
           headers: {
             'Content-Type': 'application/json',

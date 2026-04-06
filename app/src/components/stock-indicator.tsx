@@ -25,7 +25,7 @@ function getLabel(
   if (lowStock) {
     return `Only ${quantity} left`;
   }
-  return `${quantity} In stock` ;
+  return `${quantity} In stock`;
 }
 
 export function StockIndicator({ stock }: StockIndicatorProps) {

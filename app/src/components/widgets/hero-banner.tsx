@@ -4,6 +4,7 @@ import { getImageProps } from 'next/image';
 export async function HeroBanner() {
   'use cache';
   cacheLife('static');
+  await Promise.resolve();
   const common = { alt: 'SWAG Store hero banner', sizes: '100vw' };
 
   // Desktop: wide landscape

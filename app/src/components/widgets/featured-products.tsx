@@ -10,7 +10,7 @@ async function getFeaturedProducts() {
   'use cache';
   cacheLife('products');
   cacheTag('products', 'featured-products');
-  return fetchFeaturedProducts();
+  return await fetchFeaturedProducts();
 }
 
 // Not cached: stock is real-time data, must always be fresh

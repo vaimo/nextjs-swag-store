@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { SearchClient } from './search-client';
 import { SearchSkeleton } from '@/components/skeletons';
+import { SearchClient } from './search-client';
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
@@ -42,4 +42,3 @@ export default function SearchPage() {
     </Suspense>
   );
 }
-

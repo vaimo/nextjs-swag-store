@@ -41,7 +41,7 @@ export default function MarketingError({
           </button>
           <a
             className="rounded-md border border-black px-6 py-3 font-medium text-black transition hover:bg-gray-50"
-            href="/app/public"
+            href="/app"
           >
             Back to Home
           </a>

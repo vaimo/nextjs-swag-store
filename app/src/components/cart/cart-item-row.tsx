@@ -4,11 +4,11 @@ import { Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useCartFetch } from '@/hooks/use-cart-fetch';
 import { formatPrice } from '@/lib/format-price';
 import type { CartItem } from '@/store/cart-slice';
 import { setCart } from '@/store/cart-slice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { useCartFetch } from '@/hooks/use-cart-fetch';
 
 interface CartItemRowProps {
   item: CartItem;

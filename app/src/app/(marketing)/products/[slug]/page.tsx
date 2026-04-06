@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
+import { cacheLife, cacheTag } from 'next/cache';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { cacheLife, cacheTag } from 'next/cache';
 import { AddToCart } from '@/components/add-to-cart';
 import { StockIndicator } from '@/components/stock-indicator';
 import { formatPrice } from '@/lib/format-price';
-import { fetchProductBySlug, fetchProductStock, fetchAllProducts } from '@/lib/server/api-client';
+import {
+  fetchAllProducts,
+  fetchProductBySlug,
+  fetchProductStock,
+} from '@/lib/server/api-client';
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
@@ -21,7 +25,7 @@ async function getProduct(slug: string) {
   'use cache';
   cacheLife('products');
   cacheTag('products', `product-${slug}`);
-  return fetchProductBySlug(slug);
+  return await fetchProductBySlug(slug);
 }
 
 interface Props {

@@ -1,10 +1,11 @@
-import Link from 'next/link';
 import { cacheLife } from 'next/cache';
+import Link from 'next/link';
 import { CartButton } from '@/components/cart-button';
 
 export async function Header() {
   'use cache';
   cacheLife('static');
+  await Promise.resolve();
   return (
     <header className="border-b bg-white">
       <nav className="container mx-auto px-4 py-4">

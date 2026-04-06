@@ -14,6 +14,7 @@ const galleryImages = [
 export async function GalleryGrid() {
   'use cache';
   cacheLife('static');
+  await Promise.resolve();
   return (
     <div className="grid grid-cols-3 gap-4">
       {galleryImages.map((image) => (
