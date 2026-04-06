@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { StockIndicator } from '@/components/stock-indicator';
 import { formatPrice } from '@/lib/format-price';
 import type { Product, Stock } from '@/lib/server/api-client';
@@ -7,9 +8,11 @@ import type { Product, Stock } from '@/lib/server/api-client';
 export function ProductCard({
   product,
   stock,
+  stockSlot,
 }: {
   product: Product;
   stock: Stock | null;
+  stockSlot?: ReactNode;
 }) {
   return (
     <Link
@@ -24,7 +27,7 @@ export function ProductCard({
           sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
           src={product.images[0] ?? 'https://picsum.photos/400/400?grayscale'}
         />
-        <StockIndicator stock={stock} />
+        {stockSlot ?? <StockIndicator stock={stock} />}
       </div>
       <div className="flex flex-col gap-2 p-4">
         <span className="text-gray-400 text-xs uppercase tracking-wide">
