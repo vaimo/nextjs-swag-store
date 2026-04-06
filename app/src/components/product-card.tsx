@@ -1,19 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import type { ReactNode } from 'react';
-import { StockIndicator } from '@/components/stock-indicator';
 import { formatPrice } from '@/lib/format-price';
-import type { Product, Stock } from '@/lib/server/api-client';
+import type { Product } from '@/lib/server/api-client';
 
-export function ProductCard({
-  product,
-  stock,
-  stockSlot,
-}: {
-  product: Product;
-  stock: Stock | null;
-  stockSlot?: ReactNode;
-}) {
+export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       className="group flex flex-col border transition hover:shadow-lg"
@@ -27,7 +17,6 @@ export function ProductCard({
           sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
           src={product.images[0] ?? 'https://picsum.photos/400/400?grayscale'}
         />
-        {stockSlot ?? <StockIndicator stock={stock} />}
       </div>
       <div className="flex flex-col gap-2 p-4">
         <span className="text-gray-400 text-xs uppercase tracking-wide">
