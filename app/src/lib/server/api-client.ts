@@ -3,16 +3,12 @@ import 'server-only';
 const BASE_URL = process.env.VERCEL_BASE_URL ?? '';
 const BYPASS_TOKEN = process.env.VERCEL_BYPASS_TOKEN ?? '';
 
-async function apiFetch<T>(
-  path: string,
-  fetchOptions?: RequestInit
-): Promise<T> {
+async function apiFetch<T>(path: string): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`, {
     headers: {
       'x-vercel-protection-bypass': BYPASS_TOKEN,
     },
     next: { revalidate: 60 },
-    ...fetchOptions,
   });
 
   if (!res.ok) {
@@ -93,9 +89,7 @@ interface StockResponse {
 
 export async function fetchProductStock(slug: string): Promise<Stock | null> {
   try {
-    const res = await apiFetch<StockResponse>(`/products/${slug}/stock`, {
-      cache: 'no-store',
-    });
+    const res = await apiFetch<StockResponse>(`/products/${slug}/stock`);
     return res.data;
   } catch {
     return null;

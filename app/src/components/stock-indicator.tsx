@@ -29,13 +29,9 @@ function getLabel(
 }
 
 export function StockIndicator({ stock }: StockIndicatorProps) {
-  if (stock === null) {
-    return null;
-  }
-
-  const inStock = stock.inStock;
-  const lowStock = stock.lowStock;
-  const quantity = stock.stock;
+  const inStock = stock?.inStock ?? true;
+  const lowStock = stock?.lowStock ?? false;
+  const quantity = stock?.stock ?? 0;
 
   const labelStyle = getLabelStyle(inStock, lowStock);
   const label = getLabel(inStock, lowStock, quantity);
