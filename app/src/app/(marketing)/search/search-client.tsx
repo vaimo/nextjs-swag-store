@@ -6,18 +6,28 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ProductCard } from '@/components/product-card';
 import { SearchForm } from '@/components/search-form';
 import { SearchSkeleton } from '@/components/skeletons';
-import type { Product } from '@/lib/server/api-client';
+import type { Product, Stock } from '@/lib/server/api-client';
 
 interface Category {
   slug: string;
   name: string;
 }
 
-function ProductGrid({ products }: { products: Product[] }) {
+function ProductGrid({
+  products,
+  stocks,
+}: {
+  products: Product[];
+  stocks: Record<string, Stock>;
+}) {
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} stock={null} />
+        <ProductCard
+          key={product.id}
+          product={product}
+          stock={stocks[product.slug] ?? null}
+        />
       ))}
     </div>
   );
@@ -26,6 +36,7 @@ function ProductGrid({ products }: { products: Product[] }) {
 interface SearchResultsProps {
   loading: boolean;
   products: Product[];
+  stocks: Record<string, Stock>;
   hasSearched: boolean;
   query: string;
   category: string;
@@ -34,6 +45,7 @@ interface SearchResultsProps {
 function SearchResults({
   loading,
   products,
+  stocks,
   hasSearched,
   query,
   category,
@@ -62,7 +74,7 @@ function SearchResults({
           {category ? ` in ${category}` : ''}
         </p>
       )}
-      <ProductGrid products={products} />
+      <ProductGrid products={products} stocks={stocks} />
     </>
   );
 }
@@ -76,6 +88,7 @@ function useSearchLogic() {
     () => searchParams.get('category') ?? ''
   );
   const [products, setProducts] = useState<Product[]>([]);
+  const [stocks, setStocks] = useState<Record<string, Stock>>({});
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasSearched, setHasSearched] = useState(
@@ -100,6 +113,7 @@ function useSearchLogic() {
 
   const doSearch = useCallback(async (q: string, cat: string) => {
     setLoading(true);
+    setStocks({});
     try {
       const qs = new URLSearchParams();
       if (q) {
@@ -111,7 +125,28 @@ function useSearchLogic() {
       qs.set('limit', '5');
       const res = await fetch(`/api/products?${qs}`);
       const data = await res.json();
-      setProducts(data.data ?? []);
+      const found: Product[] = data.data ?? [];
+      setProducts(found);
+
+      // Fetch stock for each product in parallel (best-effort)
+      const stockEntries = await Promise.all(
+        found.map(async (p) => {
+          try {
+            const sr = await fetch(`/api/products/${p.slug}/stock`);
+            const sd = await sr.json();
+            return [p.slug, sd.data as Stock] as const;
+          } catch {
+            return null;
+          }
+        })
+      );
+      const stockMap: Record<string, Stock> = {};
+      for (const entry of stockEntries) {
+        if (entry) {
+          stockMap[entry[0]] = entry[1];
+        }
+      }
+      setStocks(stockMap);
     } catch {
       setProducts([]);
     } finally {
@@ -169,6 +204,7 @@ function useSearchLogic() {
     category,
     setCategory,
     products,
+    stocks,
     categories,
     loading,
     hasSearched,
@@ -183,6 +219,7 @@ export function SearchClient() {
     category,
     setCategory,
     products,
+    stocks,
     categories,
     loading,
     hasSearched,
@@ -206,6 +243,7 @@ export function SearchClient() {
         loading={loading}
         products={products}
         query={query}
+        stocks={stocks}
       />
     </div>
   );
