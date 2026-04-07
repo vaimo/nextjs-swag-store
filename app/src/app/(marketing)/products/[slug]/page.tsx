@@ -3,14 +3,11 @@ import { cacheLife, cacheTag } from 'next/cache';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import { AddToCart } from '@/components/add-to-cart';
-import { StockIndicator } from '@/components/stock-indicator';
 import { formatPrice } from '@/lib/format-price';
-import {
-  fetchAllProducts,
-  fetchProductBySlug,
-  fetchProductStock,
-} from '@/lib/server/api-client';
+import { fetchAllProducts, fetchProductBySlug } from '@/lib/server/api-client';
+import { AddToCartFallback } from './add-to-cart-fallback';
+import { ProductAddToCart } from './product-add-to-cart';
+import { ProductStockBadge, StockBadgeFallback } from './product-stock-badge';
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
@@ -67,44 +64,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: url,
     },
   };
-}
-
-async function ProductStockBadge({ slug }: { slug: string }) {
-  const stock = await fetchProductStock(slug);
-  return <StockIndicator stock={stock} />;
-}
-
-async function ProductAddToCart({
-  productId,
-  slug,
-}: {
-  productId: string;
-  slug: string;
-}) {
-  const stock = await fetchProductStock(slug);
-  const inStock = stock?.inStock ?? true;
-  const quantity = stock?.stock ?? 0;
-  return (
-    <AddToCart inStock={inStock} maxQuantity={quantity} productId={productId} />
-  );
-}
-
-function StockBadgeFallback() {
-  return (
-    <span className="absolute top-2 right-2 h-5 w-16 animate-pulse bg-gray-200" />
-  );
-}
-
-function AddToCartFallback() {
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-3">
-        <div className="h-3 w-16 animate-pulse bg-gray-200" />
-        <div className="h-9 w-28 animate-pulse bg-gray-200" />
-      </div>
-      <div className="h-11 w-full animate-pulse bg-gray-200" />
-    </div>
-  );
 }
 
 export default async function ProductPage({ params }: Props) {

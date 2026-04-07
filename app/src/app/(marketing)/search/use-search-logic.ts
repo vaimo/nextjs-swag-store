@@ -126,6 +126,6 @@ export function useSearchLogic(): SearchLogicResult {
     categories,
     loading,
     hasSearched,
-    triggerSearch
+    triggerSearch,
   };
 }
