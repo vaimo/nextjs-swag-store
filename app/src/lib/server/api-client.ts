@@ -1,4 +1,5 @@
 import 'server-only';
+import { cache } from 'react';
 
 const BASE_URL = process.env.VERCEL_BASE_URL ?? '';
 const BYPASS_TOKEN = process.env.VERCEL_BYPASS_TOKEN ?? '';
@@ -88,16 +89,18 @@ interface StockResponse {
   data: Stock;
 }
 
-export async function fetchProductStock(slug: string): Promise<Stock | null> {
-  try {
-    const res = await apiFetch<StockResponse>(`/products/${slug}/stock`, {
-      cache: 'no-store',
-    });
-    return res.data;
-  } catch {
-    return null;
+export const fetchProductStock = cache(
+  async (slug: string): Promise<Stock | null> => {
+    try {
+      const res = await apiFetch<StockResponse>(`/products/${slug}/stock`, {
+        cache: 'no-store',
+      });
+      return res.data;
+    } catch {
+      return null;
+    }
   }
-}
+);
 
 export interface Promotion {
   id: string;
