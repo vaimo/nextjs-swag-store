@@ -72,7 +72,7 @@ export async function HeroBanner() {
           </a>
           <a
             className="rounded-xs border border-white px-8 py-4 font-medium text-lg text-white transition hover:bg-white/10"
-            href="/about"
+            href="/"
           >
             Learn More
           </a>
