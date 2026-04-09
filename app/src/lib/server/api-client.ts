@@ -5,12 +5,17 @@ const BASE_URL = process.env.VERCEL_BASE_URL ?? '';
 const BYPASS_TOKEN = process.env.VERCEL_BYPASS_TOKEN ?? '';
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
+  const { headers: extraHeaders, cache: cacheOption, ...rest } = options ?? {};
+  const nextOption = cacheOption === 'no-store' ? undefined : { revalidate: 60 };
+
   const res = await fetch(`${BASE_URL}${path}`, {
+    ...rest,
     headers: {
       'x-vercel-protection-bypass': BYPASS_TOKEN,
+      ...extraHeaders,
     },
-    next: { revalidate: 60 },
-    ...options,
+    ...(cacheOption ? { cache: cacheOption } : {}),
+    ...(nextOption ? { next: nextOption } : {}),
   });
 
   if (!res.ok) {
